@@ -67,10 +67,10 @@ public class KyptensDumbLayoutTheFirst extends LinearOpMode {
 
 
         // Find objects on Driver Controller
-        frontLeftDrive = hardwareMap.get(DcMotor.class, "back_left");
-        backLeftDrive = hardwareMap.get(DcMotor.class, "back_right");
-        frontRightDrive = hardwareMap.get(DcMotor.class, "front_left");
-        backRightDrive = hardwareMap.get(DcMotor.class, "front_right");
+        frontLeftDrive = hardwareMap.get(DcMotor.class, "leftBack");
+        backLeftDrive = hardwareMap.get(DcMotor.class, "rightBack");
+        frontRightDrive = hardwareMap.get(DcMotor.class, "leftFront");
+        backRightDrive = hardwareMap.get(DcMotor.class, "rightFront");
         armSwing = hardwareMap.get(DcMotor.class, "armSwing");
         inOutLeft = hardwareMap.get(DcMotor.class, "inOutLeft");
         inOutRight = hardwareMap.get(DcMotor.class, "inOutRight");
