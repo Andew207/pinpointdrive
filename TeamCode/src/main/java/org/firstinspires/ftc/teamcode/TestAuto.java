@@ -39,15 +39,16 @@ public class TestAuto extends LinearOpMode {
                         // )
 
                         // SAMPLE DRIVE STRAIGHT with use of velocity and acceleration functions.  Notice behavior of robot
-                        //.lineToX(-40)                                                   // Drive to position 0,-40, max velocity and accel
-                        //.lineToX(0, new TranslationalVelConstraint(10.0))   // Return to start slow velocity
-                        //.lineToX(-40, null, new ProfileAccelConstraint(-10.0, 40.0))   // Drive forward to position 0,-40 acceleration quickly
-                        //.lineToX(0, new TranslationalVelConstraint(5.0), new ProfileAccelConstraint(-10.0, 10.0))   // return to 0,0 accelerate slowly at low low velocity
+                        .lineToX(-40)                                                 // Drive to position 0,-40, max velocity and accel
+                        .lineToX(0, new TranslationalVelConstraint(10.0))   // Return to start slow velocity
+                        .lineToX(-40, null, new ProfileAccelConstraint(-10.0, 40.0))   // Drive forward to position 0,-40 acceleration quickly
+                        .lineToX(0, new TranslationalVelConstraint(5.0), new ProfileAccelConstraint(-10.0, 10.0))   // return to 0,0 accelerate slowly at low low velocity
+
 
                         // SAMPLE DRIVE IN RECTANGLE WITH DIFFERENT TURNS
 
-
-                        .turnTo(Math.PI/2)
+/*
+                        .turnTo(Math.toRadians(90))
                         .strafeTo(new Vector2d(0,-66))
                         .strafeTo(new Vector2d(-20, -66))
                         //.lineToY(-12)
@@ -55,6 +56,8 @@ public class TestAuto extends LinearOpMode {
                         .splineTo( new Vector2d(0,-44), 0)
                         .strafeTo(new Vector2d(-0, 0))
                         .turnTo(0)
+
+ */
                         .build()
 
         );

@@ -78,6 +78,7 @@ public class MecanumDrive {
     public final AccelConstraint defaultAccelConstraint =
             new ProfileAccelConstraint(PARAMS.minProfileAccel, PARAMS.maxProfileAccel);
     public final DcMotorEx leftFront, leftBack, rightBack, rightFront;
+    public final DcMotor armSwing;
     public final VoltageSensor voltageSensor;
     public LazyImu lazyImu;
     public final Localizer localizer;
@@ -109,6 +110,8 @@ public class MecanumDrive {
         leftBack = hardwareMap.get(DcMotorEx.class, "leftBack");
         rightBack = hardwareMap.get(DcMotorEx.class, "rightBack");
         rightFront = hardwareMap.get(DcMotorEx.class, "rightFront");
+        armSwing = hardwareMap.get(DcMotor.class, "armSwing");
+
 
 
         leftFront.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);

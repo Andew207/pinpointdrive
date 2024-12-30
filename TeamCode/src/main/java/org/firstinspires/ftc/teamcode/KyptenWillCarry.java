@@ -151,11 +151,10 @@ public class KyptenWillCarry extends LinearOpMode {
 
 
 
-            if (gamepad1.a && !changed1) {
-                if (teethPos == 1) teethPos = 0;
-                else teethPos = 1;
-                changed1 = true;
-            } else if (!gamepad1.a) changed1 = false;
+            if (gamepad1.a )
+                teethPos = 0;
+            else if(gamepad1.b)
+                teethPos = 1;
 
             if(gamepad1.left_bumper)
                 bumper = 1;
