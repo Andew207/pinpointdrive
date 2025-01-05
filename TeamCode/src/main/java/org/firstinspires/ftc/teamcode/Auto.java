@@ -25,7 +25,7 @@ public class Auto extends LinearOpMode {
 
         PinpointDrive drive = new PinpointDrive(hardwareMap, beginPose);
 
-        Actions.runBlocking(teeth.Closed());
+        Actions.runBlocking(teeth.closed());
 
         waitForStart();
 
@@ -41,14 +41,41 @@ public class Auto extends LinearOpMode {
         );
         Actions.runBlocking(armSwing.throughBars2());
         sleep(500);
-        Actions.runBlocking(teeth.Open());
+        Actions.runBlocking(teeth.open());
         sleep(1000);
         Actions.runBlocking(
                 drive.actionBuilder(new Pose2d(-8,-40, 0))
                         .strafeTo(new Vector2d(-8,-50))
                         .build()
         );
+        Actions.runBlocking(armSwing.neutral());
+        Actions.runBlocking(
+                drive.actionBuilder(new Pose2d(-8,-50, 0))
+                        .lineToX(-48)
+                        .build()
+        );
+        Actions.runBlocking(
+                drive.actionBuilder(new Pose2d(-48,-50, 0))
+                        .strafeTo(new Vector2d(-48,-30))
+                        .build()
+        );
+        Actions.runBlocking(armSwing.pickup());
+        sleep(500);
+        Actions.runBlocking(teeth.closed());
+        Actions.runBlocking(armSwing.neutral());
+        Actions.runBlocking(
+                drive.actionBuilder(new Pose2d(-48, -30, 0))
+                        .turn(Math.toRadians(135))
+                        .build()
+        );
 
+        Actions.runBlocking(armSwing.score());
+        Actions.runBlocking(
+                drive.actionBuilder(new Pose2d(-48,-30, 3*Math.PI/4))
+                        .strafeTo(new Vector2d(-56,-56))
+                        .build()
+        );
+        Actions.runBlocking(teeth.open());
 
     }
 }

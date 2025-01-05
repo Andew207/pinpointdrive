@@ -64,7 +64,7 @@ class Teeth(hardwareMap: HardwareMap) {
      * alongside a collect action
      */
 
-    fun Open(): Action = SetState(TeethPos.Open)
-    fun Closed(): Action = SetState(TeethPos.Closed)
+    fun open(): Action = SetState(TeethPos.Open)
+    fun closed(): Action = SetState(TeethPos.Closed)
 
 }
