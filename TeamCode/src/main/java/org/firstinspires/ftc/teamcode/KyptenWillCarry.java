@@ -145,15 +145,15 @@ public class KyptenWillCarry extends LinearOpMode {
             }
             if (inOutPosition <= -20)
                 inOutPosition = 40;
-            if (inOutPosition >= 3100)
-                inOutPosition = 3000;
+            if (inOutPosition >= 3200)
+                inOutPosition = 3100;
 
 
 
 
-            if (gamepad1.a )
+            if (gamepad1.a)
                 teethPos = 0;
-            else if(gamepad1.b)
+            else /*if(gamepad1.a && teethPos == 1)*/
                 teethPos = 1;
 
             if(gamepad1.left_bumper)
@@ -173,8 +173,15 @@ public class KyptenWillCarry extends LinearOpMode {
                     armSwingPosition = -20;
                 }
             }
-            if (armSwingPosition < -2025){
-                armSwingPosition = -2000;
+            if (armSwingPosition < -2150){
+                armSwingPosition = -2120;
+            }
+
+            if(gamepad1.b) {
+
+                    armSwingPosition = -2120;
+                    inOutPosition = 3100;
+
             }
 
             armSwing.setTargetPosition(armSwingPosition);
