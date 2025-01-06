@@ -7,9 +7,11 @@ import com.acmerobotics.roadrunner.Vector2d;
 import com.acmerobotics.roadrunner.ftc.Actions;
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
-import org.firstinspires.ftc.teamcode.appendeges.ArmSwing;
 
+import org.firstinspires.ftc.teamcode.appendeges.ArmSwing;
 import org.firstinspires.ftc.teamcode.appendeges.Teeth;
+import org.firstinspires.ftc.teamcode.appendeges.Reach;
+
 import org.firstinspires.ftc.teamcode.drive.PinpointDrive;
 
 import javax.crypto.ExemptionMechanism;
@@ -70,6 +72,8 @@ public class Auto extends LinearOpMode {
         );
 
         Actions.runBlocking(armSwing.score());
+        Actions.runBlocking(Reach.SetState);
+
         Actions.runBlocking(
                 drive.actionBuilder(new Pose2d(-48,-30, 3*Math.PI/4))
                         .strafeTo(new Vector2d(-56,-56))
