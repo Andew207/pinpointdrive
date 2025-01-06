@@ -7,38 +7,32 @@ import com.qualcomm.robotcore.hardware.DcMotorSimple
 import com.qualcomm.robotcore.hardware.HardwareMap
 
 
-class Reach(hardwareMap: HardwareMap) {
+class ReachL(hardwareMap: HardwareMap) {
 
     /**
      * @param position the position of the scoringArm in that state, -1 means we don't currently
      * know the position of the scoringArm
      */
-    enum class ReachState(val position: Int) {
+    enum class ReachLState(val position: Int) {
         In(0),
         Out(2900)
-
     }
 
-    var reachState = ReachState.In
+    var reachLState = ReachLState.In
 
     private val reachL = hardwareMap.get(DcMotor::class.java, "inOutLeft")
-    private val reachR = hardwareMap.get(DcMotor::class.java, "inOutRight")
 
     private val power = 0.75
 
+    var reachLOffset = 0 //offset used to reset the arm positions mid-match
     var targetPosition = 0.0
 
     init {
         reachL.mode = DcMotor.RunMode.STOP_AND_RESET_ENCODER
-        reachR.mode = DcMotor.RunMode.STOP_AND_RESET_ENCODER
         reachL.direction = DcMotorSimple.Direction.REVERSE
-        reachR.direction = DcMotorSimple.Direction.FORWARD
         reachL.targetPosition = 0
-        reachR.targetPosition = 0
         reachL.mode = DcMotor.RunMode.RUN_TO_POSITION
-        reachR.mode = DcMotor.RunMode.RUN_TO_POSITION
         reachL.power = power
-        reachR.power = power
     }
 
     /**
@@ -47,26 +41,21 @@ class Reach(hardwareMap: HardwareMap) {
      *
      * @param state the state (and associated position) to set the arm to
      */
-    inner class SetState(private val state: ReachState) : Action {
+    inner class SetState(private val state: ReachLState) : Action {
         private var initialized = false
 
         @Suppress("PARAMETER_NAME_CHANGED_ON_OVERRIDE")
         override fun run(packet: TelemetryPacket): Boolean {
             if (!initialized) {
                 targetPosition = state.position.toDouble()
-                reachL.targetPosition = targetPosition.toInt()
-                reachR.targetPosition = targetPosition.toInt()
-                reachState = state
+                reachL.targetPosition = targetPosition.toInt() - reachLOffset
+                reachLState = state
                 initialized = true
             }
             reachL.currentPosition
-            reachR.currentPosition
-            packet.put("L Target Position", reachL.targetPosition)
-            packet.put("L Current Position", reachL.currentPosition)
-            packet.put("R Target Position", reachR.targetPosition)
-            packet.put("R Current Position", reachR.currentPosition)
-            reachL.isBusy
-            reachR.isBusy
+            packet.put("Target Position", reachL.targetPosition)
+            packet.put("Current Position", reachL.currentPosition)
+            //TODO: make this scoringArm.isbusy so that it will actually do smth :)
             return false
         }
     }
@@ -82,6 +71,8 @@ class Reach(hardwareMap: HardwareMap) {
      * alongside a collect action
      */
 
-    fun in_(): Action = SetState(ReachState.In)
-    fun out(): Action = SetState(ReachState.Out)
+    fun inn(): Action = SetState(ReachLState.In)
+    fun out(): Action = SetState(ReachLState.Out)
+
+
 }

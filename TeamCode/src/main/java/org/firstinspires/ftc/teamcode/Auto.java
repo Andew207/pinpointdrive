@@ -10,7 +10,8 @@ import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 
 import org.firstinspires.ftc.teamcode.appendeges.ArmSwing;
 import org.firstinspires.ftc.teamcode.appendeges.Teeth;
-import org.firstinspires.ftc.teamcode.appendeges.Reach;
+import org.firstinspires.ftc.teamcode.appendeges.ReachL;
+import org.firstinspires.ftc.teamcode.appendeges.ReachR;
 
 import org.firstinspires.ftc.teamcode.drive.PinpointDrive;
 
@@ -72,7 +73,7 @@ public class Auto extends LinearOpMode {
         );
 
         Actions.runBlocking(armSwing.score());
-        Actions.runBlocking(Reach.SetState);
+        Actions.runBlocking();
 
         Actions.runBlocking(
                 drive.actionBuilder(new Pose2d(-48,-30, 3*Math.PI/4))
