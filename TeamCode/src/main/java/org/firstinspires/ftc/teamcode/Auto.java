@@ -10,8 +10,7 @@ import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 
 import org.firstinspires.ftc.teamcode.appendeges.ArmSwing;
 import org.firstinspires.ftc.teamcode.appendeges.Teeth;
-import org.firstinspires.ftc.teamcode.appendeges.ReachL;
-import org.firstinspires.ftc.teamcode.appendeges.ReachR;
+import org.firstinspires.ftc.teamcode.appendeges.Reach;
 
 import org.firstinspires.ftc.teamcode.drive.PinpointDrive;
 
@@ -25,6 +24,7 @@ public class Auto extends LinearOpMode {
 
         ArmSwing armSwing = new ArmSwing(hardwareMap);
         Teeth teeth = new Teeth(hardwareMap);
+        Reach reach = new Reach(hardwareMap);
 
         PinpointDrive drive = new PinpointDrive(hardwareMap, beginPose);
 
@@ -45,6 +45,7 @@ public class Auto extends LinearOpMode {
         Actions.runBlocking(armSwing.throughBars2());
         sleep(500);
         Actions.runBlocking(teeth.open());
+        Actions.runBlocking(reach.inn());
         sleep(1000);
         Actions.runBlocking(
                 drive.actionBuilder(new Pose2d(-8,-40, 0))
@@ -73,14 +74,15 @@ public class Auto extends LinearOpMode {
         );
 
         Actions.runBlocking(armSwing.score());
-        Actions.runBlocking();
+        Actions.runBlocking(reach.out());
 
         Actions.runBlocking(
                 drive.actionBuilder(new Pose2d(-48,-30, 3*Math.PI/4))
-                        .strafeTo(new Vector2d(-56,-56))
+                        .strafeTo(new Vector2d(-52,-52))
                         .build()
         );
         Actions.runBlocking(teeth.open());
+        sleep(500);
 
     }
 }

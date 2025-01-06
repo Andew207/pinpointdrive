@@ -14,10 +14,10 @@ class ArmSwing(hardwareMap: HardwareMap) {
      * know the position of the scoringArm
      */
     enum class ArmState(val position: Int) {
-        Score(1600), // lol funny number
+        Score(2100), // lol funny number
         ThroughBars1(1515),
         ThroughBars2(1300),
-        Neutral(200),
+        Neutral(300),
         PickUp(0)
 
     }
