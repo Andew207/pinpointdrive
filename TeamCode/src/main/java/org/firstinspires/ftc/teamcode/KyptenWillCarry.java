@@ -54,6 +54,7 @@ public class KyptenWillCarry extends LinearOpMode {
     private DcMotor inOutLeft = null;
     private DcMotor inOutRight = null;
     private Servo teeth = null;
+    private Servo spin = null;
 
     //timer
     private final ElapsedTime timer = new ElapsedTime();
@@ -72,6 +73,7 @@ public class KyptenWillCarry extends LinearOpMode {
         inOutLeft = hardwareMap.get(DcMotor.class, "inOutLeft");
         inOutRight = hardwareMap.get(DcMotor.class, "inOutRight");
         teeth = hardwareMap.get(Servo.class, "teeth");
+        spin = hardwareMap.get(Servo.class, "spin");
 
         int slow = 1;
 
@@ -83,11 +85,14 @@ public class KyptenWillCarry extends LinearOpMode {
         backRightDrive.setDirection(DcMotor.Direction.REVERSE);
         inOutLeft.setDirection(DcMotorSimple.Direction.REVERSE);
         inOutRight.setDirection(DcMotorSimple.Direction.FORWARD);
+        armSwing.setDirection(DcMotorSimple.Direction.REVERSE);
 
 
 
         waitForStart();
         runtime.reset();
+
+        spin.setPosition(0.5);
 
         // Reset encoders
 
@@ -145,11 +150,15 @@ public class KyptenWillCarry extends LinearOpMode {
             }
             if (inOutPosition <= -20)
                 inOutPosition = 40;
-            if (inOutPosition >= 3200)
-                inOutPosition = 3100;
+            if (inOutPosition >= 3550)
+                inOutPosition = 3500;
 
 
-
+            if (gamepad1.x && !changed1) {
+                if (spin.getPosition() == 1) spin.setPosition(0);
+                else spin.setPosition(1);
+                changed1 = true;
+            } else if (!gamepad1.x) changed1 = false;
 
             if (gamepad1.a)
                 teethPos = 0;
@@ -173,16 +182,19 @@ public class KyptenWillCarry extends LinearOpMode {
                     armSwingPosition = -20;
                 }
             }
-            if (armSwingPosition < -2020){
-                armSwingPosition = -2010;
+            if (armSwingPosition < -1900){
+                armSwingPosition = -1890;
             }
 
             if(gamepad1.b) {
 
-                    armSwingPosition = -2010;
-                    inOutPosition = 3100;
+                    armSwingPosition = -1890;
+                    inOutPosition = 3500;
 
             }
+
+
+
 
             armSwing.setTargetPosition(armSwingPosition);
 
@@ -231,6 +243,9 @@ public class KyptenWillCarry extends LinearOpMode {
             telemetry.addData("FR Encoder", frontRightDrive.getCurrentPosition());
             telemetry.addData("BL Encoder", backLeftDrive.getCurrentPosition());
             telemetry.addData("BR Encoder", backRightDrive.getCurrentPosition());
+
+            telemetry.addData("teeth", teeth.getPosition());
+            telemetry.addData("spin", spin.getPosition());
 
             telemetry.addData("target pos var", inOutPosition);
             telemetry.addData("left pos", inOutLeft.getCurrentPosition());

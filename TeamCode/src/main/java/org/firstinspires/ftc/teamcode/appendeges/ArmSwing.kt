@@ -14,11 +14,13 @@ class ArmSwing(hardwareMap: HardwareMap) {
      * know the position of the scoringArm
      */
     enum class ArmState(val position: Int) {
-        Score(2100), // lol funny number
-        ThroughBars1(1515),
-        ThroughBars2(1300),
-        Neutral(300),
-        PickUp(0)
+        Score1(1900),
+        Score2(1750), // lol funny number
+        ThroughBars1(1400),
+        ThroughBars2(1170),
+        CornerPickup(500),
+        Neutral(400),
+        PickUp(100)
 
     }
 
@@ -33,7 +35,7 @@ class ArmSwing(hardwareMap: HardwareMap) {
 
     init {
         armSwing.mode = DcMotor.RunMode.STOP_AND_RESET_ENCODER
-        armSwing.direction = DcMotorSimple.Direction.REVERSE
+        armSwing.direction = DcMotorSimple.Direction.FORWARD
         armSwing.targetPosition = 0
         armSwing.mode = DcMotor.RunMode.RUN_TO_POSITION
         armSwing.power = power
@@ -78,7 +80,9 @@ class ArmSwing(hardwareMap: HardwareMap) {
     fun throughBars1(): Action = SetState(ArmState.ThroughBars1)
     fun throughBars2(): Action = SetState(ArmState.ThroughBars2)
     fun neutral(): Action = SetState(ArmState.Neutral)
+    fun corner(): Action = SetState(ArmState.CornerPickup)
     fun pickup(): Action = SetState(ArmState.PickUp)
-    fun score(): Action = SetState(ArmState.Score)
+    fun score1(): Action = SetState(ArmState.Score1)
+    fun score2(): Action = SetState(ArmState.Score2)
 
 }
