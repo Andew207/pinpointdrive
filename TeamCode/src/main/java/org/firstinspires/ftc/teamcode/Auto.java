@@ -1,7 +1,9 @@
 package org.firstinspires.ftc.teamcode;
 
+import com.acmerobotics.roadrunner.ParallelAction;
 import com.acmerobotics.roadrunner.Pose2d;
 import com.acmerobotics.roadrunner.ProfileAccelConstraint;
+import com.acmerobotics.roadrunner.SequentialAction;
 import com.acmerobotics.roadrunner.TranslationalVelConstraint;
 import com.acmerobotics.roadrunner.Vector2d;
 import com.acmerobotics.roadrunner.ftc.Actions;
@@ -34,47 +36,19 @@ public class Auto extends LinearOpMode {
         Actions.runBlocking(spin.offset());
 
         waitForStart();
+        Actions.runBlocking(new SequentialAction(
+                armSwing.neutral(),
+                spin.straight(),
+                new ParallelAction(
+                        drive.actionBuilder(beginPose)
+                                .splineTo(new Vector2d(-47,-32.5), 0)
+                                .build()
+                )
+        ));
 
-        Actions.runBlocking(armSwing.neutral());
-        Actions.runBlocking(spin.straight());
-        Actions.runBlocking(
-                drive.actionBuilder(beginPose)
-                        .strafeTo(new Vector2d(-47.5,-50))
-                        .build()
-        );
-        /*
-        Actions.runBlocking(armSwing.throughBars1());
 
-        Actions.runBlocking(
-                drive.actionBuilder(beginPose)
 
-                        .strafeTo(new Vector2d(-8,-42))
 
-                        .build()
-
-        );
-        Actions.runBlocking(armSwing.throughBars2());
-        sleep(500);
-        Actions.runBlocking(teeth.open());
-        Actions.runBlocking(reach.inn());
-        sleep(1000);
-        Actions.runBlocking(
-                drive.actionBuilder(new Pose2d(-8,-40, 0))
-                        .strafeTo(new Vector2d(-8,-50))
-                        .build()
-        );
-        Actions.runBlocking(armSwing.neutral());
-        Actions.runBlocking(
-                drive.actionBuilder(new Pose2d(-8,-50, 0))
-                        .lineToX(-48)
-                        .build()
-        );
-        */
-        Actions.runBlocking(
-                drive.actionBuilder(new Pose2d(-47,-50, 0))
-                        .strafeTo(new Vector2d(-47,-32.5))
-                        .build()
-        );
         Actions.runBlocking(armSwing.pickup());
         sleep(500);
         Actions.runBlocking(teeth.closed());
@@ -82,6 +56,15 @@ public class Auto extends LinearOpMode {
         Actions.runBlocking(armSwing.score1());
         sleep(500);
         Actions.runBlocking(reach.out());
+        /*
+        Actions.runBlocking(armSwing.pickup(),
+                sleep(500),
+                teeth.closed(),
+                sleep(500),
+                armSwing.score1(),
+                sleep(500),
+                reach.out());
+        */
         Actions.runBlocking(
                 drive.actionBuilder(new Pose2d(-47.5, -32.5, 0))
                         .strafeTo(new Vector2d(-47.5,-45))
