@@ -31,13 +31,18 @@
 // Importing things
 package org.firstinspires.ftc.teamcode;
 
+import com.qualcomm.hardware.rev.RevTouchSensor;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.DcMotorSimple;
+import com.qualcomm.robotcore.hardware.DigitalChannel;
 import com.qualcomm.robotcore.hardware.Servo;
 import com.qualcomm.robotcore.util.ElapsedTime;
 import com.qualcomm.robotcore.util.Range;
+
+import org.firstinspires.ftc.ftccommon.internal.manualcontrol.parameters.DigitalAllPinsParameters;
+
 
 
 @TeleOp(name="Kypten Will Carry", group="Linear Opmode")
@@ -55,6 +60,8 @@ public class KyptenWillCarry extends LinearOpMode {
     private DcMotor inOutRight = null;
     private Servo teeth = null;
     private Servo spin = null;
+    private RevTouchSensor limL;
+    private RevTouchSensor limR;
 
     //timer
     private final ElapsedTime timer = new ElapsedTime();
@@ -74,6 +81,8 @@ public class KyptenWillCarry extends LinearOpMode {
         inOutRight = hardwareMap.get(DcMotor.class, "inOutRight");
         teeth = hardwareMap.get(Servo.class, "teeth");
         spin = hardwareMap.get(Servo.class, "spin");
+        limL = hardwareMap.get(RevTouchSensor.class, "limL");
+        limR = hardwareMap.get(RevTouchSensor.class,"limR");
 
         int slow = 1;
 
@@ -99,6 +108,7 @@ public class KyptenWillCarry extends LinearOpMode {
         inOutLeft.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
         inOutRight.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
         armSwing.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+
         inOutLeft.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
         inOutRight.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
 
@@ -148,7 +158,9 @@ public class KyptenWillCarry extends LinearOpMode {
                     inOutPosition = inOutPosition - 80;
                 }
             }
-            if (inOutPosition <= -20)
+            if (inOutPosition < 0 && limL.isPressed() && limR.isPressed())
+                inOutLeft.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+                inOutRight.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
                 inOutPosition = 40;
             if (inOutPosition >= 3550)
                 inOutPosition = 3500;
@@ -243,6 +255,9 @@ public class KyptenWillCarry extends LinearOpMode {
             telemetry.addData("FR Encoder", frontRightDrive.getCurrentPosition());
             telemetry.addData("BL Encoder", backLeftDrive.getCurrentPosition());
             telemetry.addData("BR Encoder", backRightDrive.getCurrentPosition());
+
+            telemetry.addData("Lim L", limL.isPressed());
+            telemetry.addData("Lim R", limR.isPressed());
 
             telemetry.addData("teeth", teeth.getPosition());
             telemetry.addData("spin", spin.getPosition());
