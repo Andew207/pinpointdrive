@@ -28,7 +28,7 @@ class ArmSwing(hardwareMap: HardwareMap) {
 
     private val armSwing = hardwareMap.get(DcMotor::class.java, "armSwing")
 
-    private val power = 0.75
+    private val power = 1.0
 
     var scoringArmOffset = 0 //offset used to reset the arm positions mid-match
     var targetPosition = 0.0

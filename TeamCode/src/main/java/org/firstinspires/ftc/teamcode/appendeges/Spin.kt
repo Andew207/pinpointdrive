@@ -16,7 +16,7 @@ class Spin(hardwareMap: HardwareMap) {
      */
     enum class SpinPos(val position: Double) {
         Offset(0.0),
-        Straight(0.5)
+        Straight(1.0)
 
     }
 
