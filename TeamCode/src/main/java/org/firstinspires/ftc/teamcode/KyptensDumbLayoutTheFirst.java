@@ -227,7 +227,7 @@ public class KyptensDumbLayoutTheFirst extends LinearOpMode {
             telemetry.addData("BL Power", backLeftPower);
             telemetry.addData("BR Power", backRightPower);
 
-
+            // Update everything after changes
             telemetry.update();
         }
     }
