@@ -25,7 +25,7 @@ class Reach(hardwareMap: HardwareMap) {
     private val reachR = hardwareMap.get(DcMotor::class.java, "inOutRight")
 
 
-    private val power = 0.75
+    private val power = 1.0
 
     var reachOffset = 0 //offset used to reset the arm positions mid-match
     var targetPosition = 0.0

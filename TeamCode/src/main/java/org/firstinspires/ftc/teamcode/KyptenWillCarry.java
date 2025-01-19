@@ -158,17 +158,17 @@ public class KyptenWillCarry extends LinearOpMode {
                     inOutPosition = inOutPosition - 80;
                 }
             }
-            if (inOutPosition < 0 && limL.isPressed() && limR.isPressed())
+            if (inOutPosition < 0 && limL.isPressed() && limR.isPressed()){
                 inOutLeft.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
                 inOutRight.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
-                inOutPosition = 40;
-            if (inOutPosition >= 3550)
-                inOutPosition = 3500;
+                inOutPosition = 40;}
+            if (inOutPosition >= 2550)
+                inOutPosition = 2500;
 
 
             if (gamepad1.x && !changed1) {
-                if (spin.getPosition() == 1) spin.setPosition(0);
-                else spin.setPosition(1);
+                if (spin.getPosition() == 0.5) spin.setPosition(0);
+                else spin.setPosition(0.5);
                 changed1 = true;
             } else if (!gamepad1.x) changed1 = false;
 
@@ -204,6 +204,7 @@ public class KyptenWillCarry extends LinearOpMode {
                     inOutPosition = 3500;
 
             }
+
 
 
 
