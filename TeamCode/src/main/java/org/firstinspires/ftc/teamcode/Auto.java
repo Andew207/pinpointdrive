@@ -1,6 +1,7 @@
 package org.firstinspires.ftc.teamcode;
 
 import com.acmerobotics.roadrunner.AccelConstraint;
+import com.acmerobotics.roadrunner.Action;
 import com.acmerobotics.roadrunner.AngularVelConstraint;
 import com.acmerobotics.roadrunner.MinVelConstraint;
 import com.acmerobotics.roadrunner.ParallelAction;
@@ -11,6 +12,7 @@ import com.acmerobotics.roadrunner.TranslationalVelConstraint;
 import com.acmerobotics.roadrunner.Vector2d;
 import com.acmerobotics.roadrunner.VelConstraint;
 import com.acmerobotics.roadrunner.ftc.Actions;
+import com.fasterxml.jackson.databind.ext.SqlBlobSerializer;
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 
@@ -28,7 +30,7 @@ import javax.crypto.ExemptionMechanism;
 @Autonomous
 public class Auto extends LinearOpMode {
     public void runOpMode() {
-        Pose2d beginPose = new Pose2d(-32, -64, 0);
+        Pose2d beginPose = new Pose2d(-8, -64, 0);
         Pose2d pose = new Pose2d(0,0,0);
 
         ArmSwing armSwing = new ArmSwing(hardwareMap);
@@ -38,12 +40,13 @@ public class Auto extends LinearOpMode {
 
         PinpointDrive drive = new PinpointDrive(hardwareMap, beginPose);
 
-        Actions.runBlocking(teeth.open());
-        Actions.runBlocking(spin.straight());
+
 
 
 
         waitForStart();
+
+
 
         VelConstraint baseVelConstraint = new MinVelConstraint(Arrays.asList(
                 new TranslationalVelConstraint(100.0),
@@ -52,10 +55,31 @@ public class Auto extends LinearOpMode {
         AccelConstraint baseAccelConstraint = new ProfileAccelConstraint(-30.0, 50.0);
 
         Actions.runBlocking(new SequentialAction(
-                armSwing.neutral(),
-                spin.straight(),
+                armSwing.pickup(),
+                teeth.closed(),
+                armSwing.throughBars1(),
                 new ParallelAction(
+                        spin.straight(),
                         drive.actionBuilder(beginPose)
+                                .strafeTo(new Vector2d(-8,-39))
+                                .build()
+                    ),
+                armSwing.throughBars2(),
+                drive.actionBuilder(new Pose2d(-8,-39, 0))
+                        .strafeTo(new Vector2d(-8,-45))
+                        .build(),
+                teeth.open(),
+                armSwing.neutral(),
+                drive.actionBuilder(new Pose2d(-8,-45, 0))
+                        .strafeTo(new Vector2d(-28,-45))
+                        .build()
+        ));
+
+        Actions.runBlocking(new SequentialAction(
+
+
+                new ParallelAction(
+                        drive.actionBuilder(new Pose2d(-28, -45, 0))
                                 .strafeTo(new Vector2d(-47,-32.5), baseVelConstraint, baseAccelConstraint)
                                 .build()
                 )
@@ -71,15 +95,7 @@ public class Auto extends LinearOpMode {
         Actions.runBlocking(armSwing.score1());
         sleep(500);
 
-        /*
-        Actions.runBlocking(armSwing.pickup(),
-                sleep(500),
-                teeth.closed(),
-                sleep(500),
-                armSwing.score1(),
-                sleep(500),
-                reach.out());
-        */
+
         Actions.runBlocking(new SequentialAction(
                 reach.out(),
 
@@ -98,26 +114,22 @@ public class Auto extends LinearOpMode {
         sleep(500);
         Actions.runBlocking(armSwing.score1());
 
-        sleep(500);
+        sleep(250);
         Actions.runBlocking(new SequentialAction(
                 new ParallelAction(
-                drive.actionBuilder(new Pose2d(-52,-52, 3*Math.PI/4))
+                drive.actionBuilder(new Pose2d(-52,-52, 0))
                         .strafeTo(new Vector2d(-47,-47), baseVelConstraint, baseAccelConstraint)
                         .build(),
+
                 reach.inn()),
-                new ParallelAction(
-                drive.actionBuilder(new Pose2d(-47,-47, 3*Math.PI/4))
-                        .turn(Math.toRadians(-135))
-                        .build(),
-                armSwing.neutral())
+                armSwing.neutral()
         ));
 
 
 
-        sleep(500);
+
         Actions.runBlocking(
                 drive.actionBuilder(new Pose2d(-47,-47,0))
-                        .lineToX(-57)
                         .strafeTo(new Vector2d(-57,-32.5))
                         .build()
         );
@@ -127,73 +139,78 @@ public class Auto extends LinearOpMode {
         sleep(500);
         Actions.runBlocking(armSwing.score1());
         sleep(500);
-        Actions.runBlocking(reach.out());
 
-        Actions.runBlocking(
-                drive.actionBuilder(new Pose2d(-47, -32.5, 0))
-                        .strafeTo(new Vector2d(-47,-45))
+
+        Actions.runBlocking(new SequentialAction(
+                reach.out(),
+
+                drive.actionBuilder(new Pose2d(-52, -52, 0))
                         .turn(Math.toRadians(135))
-                        .build()
-        );
+                        .build(),
+
+                armSwing.score2()
+        ));
 
 
-        Actions.runBlocking(
-                drive.actionBuilder(new Pose2d(-47,-45, 3*Math.PI/4))
-                        .strafeTo(new Vector2d(-52,-52))
-                        .build()
-        );
-        Actions.runBlocking(armSwing.score2());
-        sleep(1000);
+
+
+        sleep(  500);
         Actions.runBlocking(teeth.open());
-
         sleep(500);
-        Actions.runBlocking(
-                drive.actionBuilder(new Pose2d(-52,-52, 3*Math.PI/4))
-                        .strafeTo(new Vector2d(-47,-47))
-                        .build()
-        );
-        Actions.runBlocking(reach.inn());
+        Actions.runBlocking(armSwing.score1());
 
-        Actions.runBlocking(
-                drive.actionBuilder(new Pose2d(-47,-47, 3*Math.PI/4))
-                        .turn(Math.toRadians(-90))
-                        .build()
-        );
-        Actions.runBlocking(spin.offset());
+        sleep(250);
+        Actions.runBlocking(new SequentialAction(
+                new ParallelAction(
+                        drive.actionBuilder(new Pose2d(-52,-52, Math.toRadians(90)))
+                                .strafeTo(new Vector2d(-48,-23), baseVelConstraint, baseAccelConstraint)
+                                .build(),
+
+                        reach.inn())
+        ));
         Actions.runBlocking(armSwing.corner());
-        Actions.runBlocking(
-                drive.actionBuilder(new Pose2d(-46,-40,Math.PI/4))
-                        .strafeTo(new Vector2d(-55,-35))
+        sleep(500);
+        Actions.runBlocking(new SequentialAction(
+                spin.offset(),
+                drive.actionBuilder(new Pose2d(-48,-23,Math.toRadians(90)))
+                        .strafeTo(new Vector2d(-58,-23))
                         .build()
-        );
-        Actions.runBlocking(reach.middle());
-        sleep(750);
+        ));
+
         Actions.runBlocking(armSwing.pickup());
         sleep(500);
         Actions.runBlocking(teeth.closed());
         sleep(500);
-        Actions.runBlocking(reach.inn());
-        Actions.runBlocking(armSwing.score1());
-        sleep(500);
-        Actions.runBlocking(reach.out());
+        Actions.runBlocking(new SequentialAction(
+                armSwing.neutral(),
+                spin.straight(),
+                teeth.closed(),
+                drive.actionBuilder(new Pose2d(-58,-23,Math.toRadians(90)))
+                        .strafeTo(new Vector2d(-48,-23))
+                        .build(),
+                armSwing.score1()
+        ));
 
-        Actions.runBlocking(
-                drive.actionBuilder(new Pose2d(-47, -32.5, 0))
-                        .strafeTo(new Vector2d(-47,-45))
+
+
+
+        Actions.runBlocking(new SequentialAction(
+                reach.out(),
+
+                drive.actionBuilder(new Pose2d(-52, -52, 0))
                         .turn(Math.toRadians(135))
-                        .build()
-        );
+                        .build(),
+
+                armSwing.score2()
+        ));
 
 
-        Actions.runBlocking(
-                drive.actionBuilder(new Pose2d(-47,-45, 3*Math.PI/4))
-                        .strafeTo(new Vector2d(-52,-52))
-                        .build()
-        );
-        Actions.runBlocking(armSwing.score2());
-        sleep(1000);
+
+
+        sleep(  500);
         Actions.runBlocking(teeth.open());
-
+        sleep(500);
+        Actions.runBlocking(armSwing.score1());
 
     }
 }
