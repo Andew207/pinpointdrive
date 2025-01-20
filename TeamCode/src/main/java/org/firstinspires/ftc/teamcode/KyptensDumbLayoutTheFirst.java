@@ -143,6 +143,7 @@ public class KyptensDumbLayoutTheFirst extends LinearOpMode {
                 changed = true;
             } else if (!gamepad1.a) changed = false;
 
+            // Slides position
             if (gamepad2.left_trigger - gamepad2.right_trigger != 0){
                 if (gamepad2.left_trigger != 0){
                     inOutPosition = inOutPosition + 40;
@@ -192,14 +193,6 @@ public class KyptensDumbLayoutTheFirst extends LinearOpMode {
 
 
 
-
-
-
-
-
-
-
-
             teeth.setPosition(teethPos);
 
 
@@ -234,7 +227,7 @@ public class KyptensDumbLayoutTheFirst extends LinearOpMode {
             telemetry.addData("BL Power", backLeftPower);
             telemetry.addData("BR Power", backRightPower);
 
-
+            // Update everything after changes
             telemetry.update();
         }
     }
