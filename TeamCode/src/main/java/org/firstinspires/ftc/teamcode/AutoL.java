@@ -1,7 +1,6 @@
 package org.firstinspires.ftc.teamcode;
 
 import com.acmerobotics.roadrunner.AccelConstraint;
-import com.acmerobotics.roadrunner.Action;
 import com.acmerobotics.roadrunner.AngularVelConstraint;
 import com.acmerobotics.roadrunner.MinVelConstraint;
 import com.acmerobotics.roadrunner.ParallelAction;
@@ -12,7 +11,6 @@ import com.acmerobotics.roadrunner.TranslationalVelConstraint;
 import com.acmerobotics.roadrunner.Vector2d;
 import com.acmerobotics.roadrunner.VelConstraint;
 import com.acmerobotics.roadrunner.ftc.Actions;
-import com.fasterxml.jackson.databind.ext.SqlBlobSerializer;
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 
@@ -25,10 +23,8 @@ import org.firstinspires.ftc.teamcode.drive.PinpointDrive;
 
 import java.util.Arrays;
 
-import javax.crypto.ExemptionMechanism;
-
 @Autonomous
-public class Auto extends LinearOpMode {
+public class AutoL extends LinearOpMode {
     public void runOpMode() {
         Pose2d beginPose = new Pose2d(-8, -64, 0);
         Pose2d pose = new Pose2d(0,0,0);
