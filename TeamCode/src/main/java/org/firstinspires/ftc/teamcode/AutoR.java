@@ -65,13 +65,18 @@ public class AutoR extends LinearOpMode {
                         .strafeTo(new Vector2d(8,-45))
                         .build(),
                 teeth.open(),
-                new ParallelAction(
+                new SequentialAction(
                 armSwing.neutral(),
                 drive.actionBuilder(new Pose2d(8,-45, 0))
                         .splineTo(new Vector2d(36,-15), Math.toRadians(90), new AngularVelConstraint(Math.PI/4))
-                        .strafeTo(new Vector2d(45,-15))
-                        .strafeTo(new Vector2d(45,-51), baseVelConstraint, baseAccelConstraint)
-                        .strafeTo(new Vector2d(45,-15), baseVelConstraint, baseAccelConstraint)
+                        .strafeTo(new Vector2d(43,-15))
+                        .strafeTo(new Vector2d(43,-51),baseVelConstraint,baseAccelConstraint)
+                        .strafeTo(new Vector2d(43,-15),baseVelConstraint,baseAccelConstraint)
+                        .strafeTo(new Vector2d(53,-15),baseVelConstraint,baseAccelConstraint)
+                        .strafeTo(new Vector2d(53,-51),baseVelConstraint,baseAccelConstraint)
+                        .strafeTo(new Vector2d(53,-15),baseVelConstraint,baseAccelConstraint)
+                        //.strafeTo(new Vector2d(62,-15),baseVelConstraint,baseAccelConstraint)
+                        //.strafeTo(new Vector2d(62,-51),baseVelConstraint,baseAccelConstraint)
                         .build())
 
         ));
