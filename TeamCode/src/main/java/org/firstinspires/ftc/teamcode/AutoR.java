@@ -6,6 +6,7 @@ import com.acmerobotics.roadrunner.MinVelConstraint;
 import com.acmerobotics.roadrunner.ParallelAction;
 import com.acmerobotics.roadrunner.Pose2d;
 import com.acmerobotics.roadrunner.ProfileAccelConstraint;
+import com.acmerobotics.roadrunner.Rotation2d;
 import com.acmerobotics.roadrunner.SequentialAction;
 import com.acmerobotics.roadrunner.TranslationalVelConstraint;
 import com.acmerobotics.roadrunner.Vector2d;
@@ -25,7 +26,7 @@ import java.util.Arrays;
 @Autonomous
 public class AutoR extends LinearOpMode {
     public void runOpMode() {
-        Pose2d beginPose = new Pose2d(-8, -64, 0);
+        Pose2d beginPose = new Pose2d(15, -64, 0);
         Pose2d pose = new Pose2d(0,0,0);
 
         ArmSwing armSwing = new ArmSwing(hardwareMap);
@@ -44,11 +45,35 @@ public class AutoR extends LinearOpMode {
 
 
         VelConstraint baseVelConstraint = new MinVelConstraint(Arrays.asList(
-                new TranslationalVelConstraint(100.0),
+                new TranslationalVelConstraint(200.0),
                 new AngularVelConstraint(Math.PI / 2)
         ));
-        AccelConstraint baseAccelConstraint = new ProfileAccelConstraint(-30.0, 50.0);
+        AccelConstraint baseAccelConstraint = new ProfileAccelConstraint(-100.0, 150.0);
 
+        Actions.runBlocking(new SequentialAction(
+                armSwing.pickup(),
+                teeth.closed(),
+                armSwing.throughBars1(),
+                new ParallelAction(
+                        spin.straight(),
+                        drive.actionBuilder(beginPose)
+                                .strafeTo(new Vector2d(8,-39))
+                                .build()
+                ),
+                armSwing.throughBars2(),
+                drive.actionBuilder(new Pose2d(8,-39, 0))
+                        .strafeTo(new Vector2d(8,-45))
+                        .build(),
+                teeth.open(),
+                new ParallelAction(
+                armSwing.neutral(),
+                drive.actionBuilder(new Pose2d(8,-45, 0))
+                        .splineTo(new Vector2d(36,-15), Math.toRadians(90), new AngularVelConstraint(Math.PI/4))
+                        .strafeTo(new Vector2d(45,-15))
+                        .strafeTo(new Vector2d(45,-51), baseVelConstraint, baseAccelConstraint)
+                        .strafeTo(new Vector2d(45,-15), baseVelConstraint, baseAccelConstraint)
+                        .build())
 
+        ));
     }
 }

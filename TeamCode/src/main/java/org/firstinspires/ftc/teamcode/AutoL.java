@@ -76,7 +76,7 @@ public class AutoL extends LinearOpMode {
 
                 new ParallelAction(
                         drive.actionBuilder(new Pose2d(-28, -45, 0))
-                                .strafeTo(new Vector2d(-47,-32.5), baseVelConstraint, baseAccelConstraint)
+                                .strafeTo(new Vector2d(-47,-36), baseVelConstraint, baseAccelConstraint)
                                 .build()
                 )
         ));
@@ -105,7 +105,7 @@ public class AutoL extends LinearOpMode {
 
 
 
-        sleep(  500);
+        sleep(  1000);
         Actions.runBlocking(teeth.open());
         sleep(500);
         Actions.runBlocking(armSwing.score1());
@@ -126,7 +126,7 @@ public class AutoL extends LinearOpMode {
 
         Actions.runBlocking(
                 drive.actionBuilder(new Pose2d(-47,-47,0))
-                        .strafeTo(new Vector2d(-57,-32.5))
+                        .strafeTo(new Vector2d(-57,-36))
                         .build()
         );
         Actions.runBlocking(armSwing.pickup());
@@ -159,7 +159,7 @@ public class AutoL extends LinearOpMode {
         Actions.runBlocking(new SequentialAction(
                 new ParallelAction(
                         drive.actionBuilder(new Pose2d(-52,-52, Math.toRadians(90)))
-                                .strafeTo(new Vector2d(-48,-23), baseVelConstraint, baseAccelConstraint)
+                                .strafeTo(new Vector2d(-48,-27.5), baseVelConstraint, baseAccelConstraint)
                                 .build(),
 
                         reach.inn())
@@ -168,8 +168,8 @@ public class AutoL extends LinearOpMode {
         sleep(500);
         Actions.runBlocking(new SequentialAction(
                 spin.offset(),
-                drive.actionBuilder(new Pose2d(-48,-23,Math.toRadians(90)))
-                        .strafeTo(new Vector2d(-58,-23))
+                drive.actionBuilder(new Pose2d(-48,-27.5,Math.toRadians(90)))
+                        .strafeTo(new Vector2d(-58,-27.5))
                         .build()
         ));
 
@@ -181,8 +181,8 @@ public class AutoL extends LinearOpMode {
                 armSwing.neutral(),
                 spin.straight(),
                 teeth.closed(),
-                drive.actionBuilder(new Pose2d(-58,-23,Math.toRadians(90)))
-                        .strafeTo(new Vector2d(-48,-23))
+                drive.actionBuilder(new Pose2d(-58,-27.5,Math.toRadians(90)))
+                        .strafeTo(new Vector2d(-48,-27.5))
                         .build(),
                 armSwing.score1()
         ));
@@ -207,6 +207,16 @@ public class AutoL extends LinearOpMode {
         Actions.runBlocking(teeth.open());
         sleep(500);
         Actions.runBlocking(armSwing.score1());
+        sleep(250);
+        Actions.runBlocking(new SequentialAction(
+                new ParallelAction(
+                        drive.actionBuilder(new Pose2d(-52,-52, Math.toRadians(90)))
+                                .strafeTo(new Vector2d(-48,-23), baseVelConstraint, baseAccelConstraint)
+                                .build(),
 
+                        reach.inn())
+        ));
+        Actions.runBlocking(armSwing.corner());
+        sleep(10000);
     }
 }

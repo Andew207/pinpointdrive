@@ -126,6 +126,7 @@ public class KyptenWillCarry extends LinearOpMode {
         double frontRightPower;
         double backLeftPower;
         double backRightPower;
+        double armPower;
         int inOutPosition = 0;
         double teethPos = 0;
         int armSwingPosition = 0;
@@ -167,8 +168,8 @@ public class KyptenWillCarry extends LinearOpMode {
 
 
             if (gamepad1.x && !changed1) {
-                if (spin.getPosition() == 0.5) spin.setPosition(0);
-                else spin.setPosition(0.5);
+                if (spin.getPosition() == 1) spin.setPosition(0);
+                else spin.setPosition(1);
                 changed1 = true;
             } else if (!gamepad1.x) changed1 = false;
 
@@ -200,21 +201,26 @@ public class KyptenWillCarry extends LinearOpMode {
 
             if(gamepad1.b) {
 
-                    armSwingPosition = -1890;
+                    armSwingPosition = -1990;
                     inOutPosition = 3500;
 
             }
 
 
 
-
+            if(armSwingPosition >= -400){
+                armPower = 0.5;
+            }
+            else{
+                armPower = 1;
+            }
 
             armSwing.setTargetPosition(armSwingPosition);
 
             inOutRight.setTargetPosition(inOutPosition);
             inOutLeft.setTargetPosition(inOutPosition);
 
-            armSwing.setPower(1);
+            armSwing.setPower(armPower);
 
             inOutRight.setPower(1);
             inOutLeft.setPower(1);
@@ -238,10 +244,10 @@ public class KyptenWillCarry extends LinearOpMode {
 
 
             // Drive equations
-            frontLeftPower = Range.clip((drive + strafe - turn) / slow, -0.75, 0.75);
-            frontRightPower = Range.clip((drive - strafe - turn) / slow, -0.75, 0.75);
-            backLeftPower = Range.clip((drive - strafe + turn) / slow, -0.75, 0.75);
-            backRightPower = Range.clip((drive + strafe + turn) / slow, -0.75, 0.75);
+            frontLeftPower = Range.clip((drive + strafe - turn) / slow, -1, 1);
+            frontRightPower = Range.clip((drive - strafe - turn) / slow, -1, 1);
+            backLeftPower = Range.clip((drive - strafe + turn) / slow, -1, 1);
+            backRightPower = Range.clip((drive + strafe + turn) / slow, -1, 1);
 
             frontLeftDrive.setPower(frontLeftPower);
             backLeftDrive.setPower(backLeftPower);
