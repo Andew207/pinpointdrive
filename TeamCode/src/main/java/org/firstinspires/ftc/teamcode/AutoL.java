@@ -43,14 +43,19 @@ public class AutoL extends LinearOpMode {
         waitForStart();
 
 
-
+        // Speed constraints //
         VelConstraint baseVelConstraint = new MinVelConstraint(Arrays.asList(
                 new TranslationalVelConstraint(100.0),
                 new AngularVelConstraint(Math.PI / 2)
         ));
         AccelConstraint baseAccelConstraint = new ProfileAccelConstraint(-30.0, 50.0);
 
+
+      /*////////////////////////////////////////////////////////////////////////////////////////////
+      Start of Auto LEFT Start of Auto LEFT Start of Auto LEFT Start of Auto LEFT Start of Auto LEFT
+      ////////////////////////////////////////////////////////////////////////////////////////////*/
         Actions.runBlocking(new SequentialAction(
+                // Put first SPECIMEN on bars
                 armSwing.pickup(),
                 teeth.closed(),
                 armSwing.throughBars1(),
@@ -61,6 +66,7 @@ public class AutoL extends LinearOpMode {
                                 .build()
                     ),
                 armSwing.throughBars2(),
+                // Go to the left side to grab first block
                 drive.actionBuilder(new Pose2d(-8,-39, 0))
                         .strafeTo(new Vector2d(-8,-45))
                         .build(),
@@ -83,7 +89,7 @@ public class AutoL extends LinearOpMode {
 
 
 
-
+        // Actually grab the first block
         Actions.runBlocking(armSwing.pickup());
         sleep(500);
         Actions.runBlocking(teeth.closed());
@@ -93,6 +99,7 @@ public class AutoL extends LinearOpMode {
 
 
         Actions.runBlocking(new SequentialAction(
+                // Reach out to the bucket
                 reach.out(),
 
                 drive.actionBuilder(new Pose2d(-52, -52, 0))
@@ -104,13 +111,14 @@ public class AutoL extends LinearOpMode {
 
 
 
-
-        sleep(  1000);
+        // Let go of the first block
+        sleep(1000);
         Actions.runBlocking(teeth.open());
         sleep(500);
         Actions.runBlocking(armSwing.score1());
-
         sleep(250);
+
+        //Pull back & go to 2nd block
         Actions.runBlocking(new SequentialAction(
                 new ParallelAction(
                 drive.actionBuilder(new Pose2d(-52,-52, 0))
@@ -129,6 +137,7 @@ public class AutoL extends LinearOpMode {
                         .strafeTo(new Vector2d(-57,-36))
                         .build()
         );
+        // Grab 2nd block
         Actions.runBlocking(armSwing.pickup());
         sleep(500);
         Actions.runBlocking(teeth.closed());
