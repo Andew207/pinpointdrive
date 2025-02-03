@@ -71,7 +71,7 @@ public class KyptenWillCarry extends LinearOpMode {
     public void runOpMode() {
 
 
-        // Find objects on Driver Controller
+        //
         frontLeftDrive = hardwareMap.get(DcMotor.class, "leftBack");
         backLeftDrive = hardwareMap.get(DcMotor.class, "rightBack");
         frontRightDrive = hardwareMap.get(DcMotor.class, "leftFront");

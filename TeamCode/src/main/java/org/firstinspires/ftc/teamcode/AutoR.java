@@ -45,14 +45,22 @@ public class AutoR extends LinearOpMode {
 
 
         VelConstraint baseVelConstraint = new MinVelConstraint(Arrays.asList(
-                new TranslationalVelConstraint(200.0),
-                new AngularVelConstraint(Math.PI / 2)
+                new TranslationalVelConstraint(140),
+                new AngularVelConstraint(Math.PI / 3)
         ));
-        AccelConstraint baseAccelConstraint = new ProfileAccelConstraint(-100.0, 150.0);
+        AccelConstraint baseAccelConstraint = new ProfileAccelConstraint(-100.0, 100.0);
+
+        VelConstraint slowVelConstraint = new MinVelConstraint(Arrays.asList(
+                new TranslationalVelConstraint(25),
+                new AngularVelConstraint(Math.PI / 4)
+        ));
+        AccelConstraint slowAccelConstraint = new ProfileAccelConstraint(-10.0, 20.0);
+
 
         Actions.runBlocking(new SequentialAction(
-                armSwing.pickup(),
+
                 teeth.closed(),
+                armSwing.pickup(),
                 armSwing.throughBars1(),
                 new ParallelAction(
                         spin.straight(),
@@ -71,14 +79,48 @@ public class AutoR extends LinearOpMode {
                         .splineTo(new Vector2d(36,-15), Math.toRadians(90), new AngularVelConstraint(Math.PI/4))
                         .strafeTo(new Vector2d(43,-15))
                         .strafeTo(new Vector2d(43,-51),baseVelConstraint,baseAccelConstraint)
-                        .strafeTo(new Vector2d(43,-15),baseVelConstraint,baseAccelConstraint)
-                        .strafeTo(new Vector2d(53,-15),baseVelConstraint,baseAccelConstraint)
-                        .strafeTo(new Vector2d(53,-51),baseVelConstraint,baseAccelConstraint)
-                        .strafeTo(new Vector2d(53,-15),baseVelConstraint,baseAccelConstraint)
+                        .strafeTo(new Vector2d(43,-20),baseVelConstraint,baseAccelConstraint)
+                        .strafeTo(new Vector2d(56,-20),baseVelConstraint,baseAccelConstraint)
+                        .strafeTo(new Vector2d(56,-51),baseVelConstraint,baseAccelConstraint)
+                        //.strafeTo(new Vector2d(53,-15),baseVelConstraint,baseAccelConstraint)
                         //.strafeTo(new Vector2d(62,-15),baseVelConstraint,baseAccelConstraint)
                         //.strafeTo(new Vector2d(62,-51),baseVelConstraint,baseAccelConstraint)
-                        .build())
-
+                        .build()),
+                armSwing.wall()
         ));
+        sleep(1000);
+        Actions.runBlocking(new SequentialAction(
+                drive.actionBuilder(new Pose2d(53,-51, Math.PI))
+                        .strafeTo(new Vector2d(47.5,-45), slowVelConstraint, slowAccelConstraint)
+
+                        .strafeTo(new Vector2d(47.5,-60), slowVelConstraint, slowAccelConstraint)
+                        .build(),
+                teeth.closed()
+        ));
+        sleep(500);
+        Actions.runBlocking(new SequentialAction( new ParallelAction(
+                armSwing.throughBars1(),
+                drive.actionBuilder(new Pose2d(47.5, -60, Math.PI))
+                        .strafeTo(new Vector2d(47.5, -50))
+                        .build()
+        )));
+
+
+        Actions.runBlocking(new SequentialAction(
+                
+                new ParallelAction(
+                        spin.straight(),
+                        drive.actionBuilder(beginPose)
+                                .strafeTo(new Vector2d(8,-39))
+                                .build()
+                ),
+                armSwing.throughBars2(),
+                drive.actionBuilder(new Pose2d(8,-39, 0))
+                        .strafeTo(new Vector2d(8,-45))
+                        .build(),
+                teeth.open(),
+                new SequentialAction(
+                        armSwing.neutral()
+                )));
     }
 }

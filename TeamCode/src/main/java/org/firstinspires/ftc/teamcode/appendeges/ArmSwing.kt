@@ -16,11 +16,11 @@ class ArmSwing(hardwareMap: HardwareMap) {
     enum class ArmState(val position: Int) {
         Score1(1900),
         Score2(1750), // lol funny number
-        ThroughBars2(1300),
+        ThroughBars2(1400),
         ThroughBars1(1030),
         CornerPickup(250),
         Neutral(400),
-
+        Wall(720),
         PickUp(100)
 
     }
@@ -85,5 +85,6 @@ class ArmSwing(hardwareMap: HardwareMap) {
     fun pickup(): Action = SetState(ArmState.PickUp)
     fun score1(): Action = SetState(ArmState.Score1)
     fun score2(): Action = SetState(ArmState.Score2)
+    fun wall(): Action = SetState(ArmState.Wall)
 
 }
