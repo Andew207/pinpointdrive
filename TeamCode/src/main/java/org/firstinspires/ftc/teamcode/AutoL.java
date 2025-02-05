@@ -145,7 +145,7 @@ public class AutoL extends LinearOpMode {
         Actions.runBlocking(armSwing.score1());
         sleep(500);
 
-
+        //Score the 2nd block
         Actions.runBlocking(new SequentialAction(
                 reach.out(),
 
@@ -159,11 +159,11 @@ public class AutoL extends LinearOpMode {
 
 
 
-        sleep(  500);
+        sleep(500);
         Actions.runBlocking(teeth.open());
         sleep(500);
         Actions.runBlocking(armSwing.score1());
-
+        //Go to 3rd block
         sleep(250);
         Actions.runBlocking(new SequentialAction(
                 new ParallelAction(
@@ -181,7 +181,7 @@ public class AutoL extends LinearOpMode {
                         .strafeTo(new Vector2d(-58,-27.5))
                         .build()
         ));
-
+        //Grab 3rd block
         Actions.runBlocking(armSwing.pickup());
         sleep(500);
         Actions.runBlocking(teeth.closed());
@@ -198,7 +198,7 @@ public class AutoL extends LinearOpMode {
 
 
 
-
+        //Score 3rd block
         Actions.runBlocking(new SequentialAction(
                 reach.out(),
 
@@ -211,12 +211,13 @@ public class AutoL extends LinearOpMode {
 
 
 
-
-        sleep(  500);
+        //Score 3rd block
+        sleep(500);
         Actions.runBlocking(teeth.open());
         sleep(500);
         Actions.runBlocking(armSwing.score1());
         sleep(250);
+        //End auto, and reset robot for later Teleop usage.
         Actions.runBlocking(new SequentialAction(
                 new ParallelAction(
                         drive.actionBuilder(new Pose2d(-52,-52, Math.toRadians(90)))
@@ -226,6 +227,7 @@ public class AutoL extends LinearOpMode {
                         reach.inn())
         ));
         Actions.runBlocking(armSwing.corner());
-        sleep(10000);
+        //Wait for a long time.......................................................
+        sleep(10000000);
     }
 }
