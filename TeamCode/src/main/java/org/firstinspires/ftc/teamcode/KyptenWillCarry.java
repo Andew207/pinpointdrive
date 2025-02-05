@@ -44,7 +44,7 @@ import com.qualcomm.robotcore.util.Range;
 import org.firstinspires.ftc.ftccommon.internal.manualcontrol.parameters.DigitalAllPinsParameters;
 
 
-
+// Setup
 @TeleOp(name="Kypten Will Carry", group="Linear Opmode")
 public class KyptenWillCarry extends LinearOpMode {
 
@@ -71,7 +71,7 @@ public class KyptenWillCarry extends LinearOpMode {
     public void runOpMode() {
 
 
-        //
+        // Defining motors
         frontLeftDrive = hardwareMap.get(DcMotor.class, "leftBack");
         backLeftDrive = hardwareMap.get(DcMotor.class, "rightBack");
         frontRightDrive = hardwareMap.get(DcMotor.class, "leftFront");
@@ -150,7 +150,7 @@ public class KyptenWillCarry extends LinearOpMode {
                 else slow = 1;
                 changed = true;
             } else if (!gamepad1.y) changed = false;
-
+            // Slides
             if (gamepad1.left_trigger - gamepad1.right_trigger != 0){
                 if (gamepad1.left_trigger != 0){
                     inOutPosition = inOutPosition + 80;
