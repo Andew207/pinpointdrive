@@ -14,11 +14,13 @@ import com.acmerobotics.roadrunner.ftc.Actions;
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 
+import org.firstinspires.ftc.robotcore.external.navigation.DistanceUnit;
 import org.firstinspires.ftc.teamcode.appendeges.ArmSwing;
 import org.firstinspires.ftc.teamcode.appendeges.Teeth;
 import org.firstinspires.ftc.teamcode.appendeges.Reach;
 import org.firstinspires.ftc.teamcode.appendeges.Spin;
 
+import org.firstinspires.ftc.teamcode.drive.GoBildaPinpointDriver;
 import org.firstinspires.ftc.teamcode.drive.PinpointDrive;
 
 import java.util.Arrays;
@@ -33,6 +35,9 @@ public class AutoL extends LinearOpMode {
         Teeth teeth = new Teeth(hardwareMap);
         Reach reach = new Reach(hardwareMap);
         Spin spin = new Spin(hardwareMap);
+
+
+
 
         PinpointDrive drive = new PinpointDrive(hardwareMap, beginPose);
 
@@ -63,6 +68,7 @@ public class AutoL extends LinearOpMode {
                         spin.straight(),
                         drive.actionBuilder(beginPose)
                                 .strafeTo(new Vector2d(-8,-39))
+
                                 .build()
                     ),
                 armSwing.throughBars2(),
@@ -77,6 +83,14 @@ public class AutoL extends LinearOpMode {
                         .build()
         ));
 
+        telemetry.addData("Odometry x", drive.getPose().position.x);
+        telemetry.addData("Odometry y", drive.getPose().position.y);
+        telemetry.addData("Odo Pos x", drive.pinpoint.getPosition().getX(DistanceUnit.INCH));
+        telemetry.addData("Odo Pos y", drive.pinpoint.getPosition().getY(DistanceUnit.INCH));
+
+
+
+        telemetry.update();
         Actions.runBlocking(new SequentialAction(
 
 
@@ -88,14 +102,17 @@ public class AutoL extends LinearOpMode {
         ));
 
 
-
+        telemetry.update();
         // Actually grab the first block
         Actions.runBlocking(armSwing.pickup());
         sleep(500);
+        telemetry.update();
         Actions.runBlocking(teeth.closed());
         sleep(500);
+        telemetry.update();
         Actions.runBlocking(armSwing.score1());
         sleep(500);
+        telemetry.update();
 
 
         Actions.runBlocking(new SequentialAction(
@@ -227,7 +244,9 @@ public class AutoL extends LinearOpMode {
                         reach.inn())
         ));
         Actions.runBlocking(armSwing.corner());
-        //Wait for a long time.......................................................
-        sleep(10000000);
+
+
+
+
     }
 }
