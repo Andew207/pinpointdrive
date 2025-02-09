@@ -118,6 +118,7 @@ public class KyptenWillCarry extends LinearOpMode {
         // Declare random variables
         boolean changed = false;
         boolean changed1 = false;
+        boolean changed2 = false;
 
         double drive;
         double strafe;
@@ -173,10 +174,11 @@ public class KyptenWillCarry extends LinearOpMode {
                 changed1 = true;
             } else if (!gamepad1.x) changed1 = false;
 
-            if (gamepad1.a)
-                teethPos = 0;
-            else /*if(gamepad1.a && teethPos == 1)*/
-                teethPos = 1;
+            if (gamepad1.a && !changed2) {
+                if (teethPos == 1) teethPos = 0;
+                else teethPos = 1;
+                changed2 = true;
+            } else if(!gamepad1.a) changed2 = false;
 
             if(gamepad1.left_bumper)
                 bumper = 1;

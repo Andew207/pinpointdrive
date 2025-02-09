@@ -66,6 +66,5 @@ public class BrokenAuto extends LinearOpMode {
                         .strafeTo(new Vector2d(-8, -45))
                         .build()
                 ));
-
     }
 }
