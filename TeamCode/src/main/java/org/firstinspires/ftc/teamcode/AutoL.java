@@ -195,7 +195,7 @@ public class AutoL extends LinearOpMode {
         Actions.runBlocking(new SequentialAction(
                 spin.offset(),
                 drive.actionBuilder(new Pose2d(-48,-27.5,Math.toRadians(90)))
-                        .strafeTo(new Vector2d(-58,-27.5))
+                        .strafeTo(new Vector2d(-59,-27.5))
                         .build()
         ));
         //Grab 3rd block
@@ -205,11 +205,13 @@ public class AutoL extends LinearOpMode {
         sleep(500);
         Actions.runBlocking(new SequentialAction(
                 armSwing.neutral(),
-                spin.straight(),
-                teeth.closed(),
-                drive.actionBuilder(new Pose2d(-58,-27.5,Math.toRadians(90)))
+                drive.actionBuilder(new Pose2d(-59,-27.5,Math.toRadians(90)))
                         .strafeTo(new Vector2d(-48,-27.5))
-                        .build(),
+                        .build()
+        ));
+        sleep(200);
+        Actions.runBlocking(new SequentialAction(
+                spin.straight(),
                 armSwing.score1()
         ));
 
