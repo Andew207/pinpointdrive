@@ -49,13 +49,13 @@ public class AutoR extends LinearOpMode {
                 new TranslationalVelConstraint(140),
                 new AngularVelConstraint(Math.PI / 3)
         ));
-        AccelConstraint baseAccelConstraint = new ProfileAccelConstraint(-100.0, 100.0);
+        AccelConstraint baseAccelConstraint = new ProfileAccelConstraint(-50.0, 100.0);
 
         VelConstraint slowVelConstraint = new MinVelConstraint(Arrays.asList(
                 new TranslationalVelConstraint(25),
                 new AngularVelConstraint(Math.PI / 4)
         ));
-        AccelConstraint slowAccelConstraint = new ProfileAccelConstraint(-10.0, 20.0);
+        AccelConstraint slowAccelConstraint = new ProfileAccelConstraint(-20.0, 20.0);
 
 
         Actions.runBlocking(new SequentialAction(
@@ -81,16 +81,18 @@ public class AutoR extends LinearOpMode {
                         .strafeTo(new Vector2d(43,-15))
                         .strafeTo(new Vector2d(43,-51),baseVelConstraint,baseAccelConstraint)
                         .strafeTo(new Vector2d(43,-20),baseVelConstraint,baseAccelConstraint)
-                        .strafeTo(new Vector2d(56,-20),baseVelConstraint,baseAccelConstraint)
-                        .strafeTo(new Vector2d(56,-51),baseVelConstraint,baseAccelConstraint)
-                        //.strafeTo(new Vector2d(53,-15),baseVelConstraint,baseAccelConstraint)
-                        //.strafeTo(new Vector2d(62,-15),baseVelConstraint,baseAccelConstraint)
-                        //.strafeTo(new Vector2d(62,-51),baseVelConstraint,baseAccelConstraint)
-                        .build()),
-                new SleepAction(100),
-                armSwing.wall()
+                        .strafeTo(new Vector2d(56,-18),slowVelConstraint,slowAccelConstraint)
+                        .build())
         ));
-        sleep(1000);
+        sleep(200);
+        Actions.runBlocking(new SequentialAction(
+                drive.actionBuilder(new Pose2d(56,-20, Math.PI/2))
+
+                        .strafeTo(new Vector2d(56,-51),baseVelConstraint,baseAccelConstraint)
+
+                .build(),
+                armSwing.wall()));
+
         Actions.runBlocking(new SequentialAction(
                 drive.actionBuilder(new Pose2d(53,-51, Math.PI))
                         .strafeTo(new Vector2d(47.5,-45), slowVelConstraint, slowAccelConstraint)
@@ -113,10 +115,11 @@ public class AutoR extends LinearOpMode {
                 new ParallelAction(
                         spin.straight(),
                         drive.actionBuilder(beginPose)
-                                .strafeTo(new Vector2d(8,-39))
+                                .strafeTo(new Vector2d(8,-38))
                                 .build()
                 ),
-                armSwing.throughBars2(),
+                new SleepAction(0.25),
+                armSwing.throughBars1(),
                 drive.actionBuilder(new Pose2d(8,-39, 0))
                         .strafeTo(new Vector2d(8,-45))
                         .build(),
