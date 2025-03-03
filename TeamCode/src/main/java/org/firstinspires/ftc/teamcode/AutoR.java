@@ -8,6 +8,7 @@ import com.acmerobotics.roadrunner.Pose2d;
 import com.acmerobotics.roadrunner.ProfileAccelConstraint;
 import com.acmerobotics.roadrunner.Rotation2d;
 import com.acmerobotics.roadrunner.SequentialAction;
+import com.acmerobotics.roadrunner.SleepAction;
 import com.acmerobotics.roadrunner.TranslationalVelConstraint;
 import com.acmerobotics.roadrunner.Vector2d;
 import com.acmerobotics.roadrunner.VelConstraint;
@@ -86,6 +87,7 @@ public class AutoR extends LinearOpMode {
                         //.strafeTo(new Vector2d(62,-15),baseVelConstraint,baseAccelConstraint)
                         //.strafeTo(new Vector2d(62,-51),baseVelConstraint,baseAccelConstraint)
                         .build()),
+                new SleepAction(100),
                 armSwing.wall()
         ));
         sleep(1000);

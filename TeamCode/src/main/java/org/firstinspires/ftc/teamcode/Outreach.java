@@ -38,17 +38,14 @@ import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.DcMotorSimple;
-import com.qualcomm.robotcore.hardware.DigitalChannel;
 import com.qualcomm.robotcore.hardware.Servo;
 import com.qualcomm.robotcore.util.ElapsedTime;
 import com.qualcomm.robotcore.util.Range;
 
-import org.firstinspires.ftc.ftccommon.internal.manualcontrol.parameters.DigitalAllPinsParameters;
-
 
 // Setup
-@TeleOp(name="Kypten Will Carry", group="Linear Opmode")
-public class KyptenWillCarry extends LinearOpMode {
+@TeleOp(name="Outreach", group="Linear Opmode")
+public class Outreach extends LinearOpMode {
 
     // Declare OpMode objects
     private final ElapsedTime runtime = new ElapsedTime();
@@ -68,6 +65,30 @@ public class KyptenWillCarry extends LinearOpMode {
     //timer
     private final ElapsedTime timer = new ElapsedTime();
 
+    /*
+    Controls:
+
+     /=\<[B1/T2][B2/T2]>/=\
+    /===\______________/===\
+    |    ^           [Y]   |
+    |  < * >       [X] [B] |
+    |    v           [A]   |
+    \     _(*)____(*)_     /
+     \___/ [LS]  [RS] \___/
+
+LS:
+ x -> Turn
+ y -> Drive Forward*
+RS:
+ x -> Strafe*
+A -> Open/Close Claw
+B -> Turn Claw
+B1 -> Lower Arm
+B2 -> Raise Arm
+T1 -> Slides In
+T2 -> Slides Out
+* these are technically opposite
+    */
     @Override
 
     public void runOpMode() {
@@ -132,7 +153,7 @@ public class KyptenWillCarry extends LinearOpMode {
         double armPower;
         int inOutPosition = 0;
         double teethPos = 0;
-        int armSwingPosition = 0;
+        int armSwingPosition = 100;
         double bumper = 0;
         int bumperaccel = 0;
 
@@ -141,25 +162,21 @@ public class KyptenWillCarry extends LinearOpMode {
 
 
             // Drive variables
-            drive = -gamepad1.left_stick_x;
+            drive = -gamepad1.right_stick_x;
             strafe = gamepad1.left_stick_y;
-            turn = gamepad1.right_stick_x;
+            turn = gamepad1.left_stick_x;
 
             // Setting the 3 intake servos
 
-            // slow mode! //
-            if (gamepad1.y && !changed) {
-                if (slow == 1) slow = 2;
-                else slow = 1;
-                changed = true;
-            } else if (!gamepad1.y) changed = false;
+            // slow mode forever...
+            slow = 3;
             // Slides
             if (gamepad1.left_trigger - gamepad1.right_trigger != 0){
                 if (gamepad1.left_trigger != 0){
-                    inOutPosition = inOutPosition + 80;
+                    inOutPosition -= 80;
                 }
                 else{
-                    inOutPosition = inOutPosition - 80;
+                    inOutPosition += 80;
                 }
             }
             if (inOutPosition < 0 && limL.isPressed() && limR.isPressed()){
@@ -170,11 +187,11 @@ public class KyptenWillCarry extends LinearOpMode {
                 inOutPosition = 2500;
 
 
-            if (gamepad1.x && !changed1) {
+            if (gamepad1.b && !changed1) {
                 if (spin.getPosition() == 1) spin.setPosition(0);
                 else spin.setPosition(1);
                 changed1 = true;
-            } else if (!gamepad1.x) changed1 = false;
+            } else if (!gamepad1.b) changed1 = false;
 
             if (gamepad1.a && !changed2) {
                 if (teethPos == 1) teethPos = 0;
@@ -208,12 +225,7 @@ public class KyptenWillCarry extends LinearOpMode {
                 armSwingPosition = -1890;
             }
 
-            if(gamepad1.b) {
 
-                    armSwingPosition = -1990;
-                    inOutPosition = 3500;
-
-            }
 
 
 
