@@ -62,7 +62,7 @@ class Wrist(hardwareMap: HardwareMap) {
      * Only use in the collect position; used to reset the positions of the arm; should be called
      * alongside a collect action
      */
-
+    //TODO: change functions to wrist functions
     fun offset(): Action = SetState(WristPos.Offset)
     fun straight(): Action = SetState(WristPos.Straight)
 
