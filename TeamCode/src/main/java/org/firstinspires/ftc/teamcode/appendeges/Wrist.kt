@@ -55,9 +55,8 @@ class Wrist(hardwareMap: HardwareMap) {
 
     /**
      * manually changes the position of the scoringArm (typically with a joystick)
-     *
      * @param input the percent speed (-1 to 1) normalized by delta time (the time between each loop)
-     */
+     **/
 
     /**
      * Only use in the collect position; used to reset the positions of the arm; should be called

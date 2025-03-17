@@ -149,7 +149,7 @@ public class KyptenWillCarry extends LinearOpMode {
 
             // Setting the 3 intake servos
 
-            // slow mode! //
+            // wrist //
             if (gamepad1.y && !changed) {
                 if (wrist.getPosition() == 0.0) wrist.setPosition(1.0);
                 else wrist.setPosition(0.0);
@@ -279,6 +279,7 @@ public class KyptenWillCarry extends LinearOpMode {
 
             telemetry.addData("teeth", teeth.getPosition());
             telemetry.addData("spin", spin.getPosition());
+            telemetry.addData("wrist", wrist.getPosition());
 
             telemetry.addData("target pos var", inOutPosition);
             telemetry.addData("left pos", inOutLeft.getCurrentPosition());
