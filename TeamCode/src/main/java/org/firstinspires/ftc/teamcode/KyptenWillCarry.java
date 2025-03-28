@@ -33,6 +33,8 @@
 // Importing things
 package org.firstinspires.ftc.teamcode;
 
+import com.acmerobotics.dashboard.FtcDashboard;
+import com.acmerobotics.dashboard.telemetry.TelemetryPacket;
 import com.qualcomm.hardware.rev.RevTouchSensor;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
@@ -42,6 +44,7 @@ import com.qualcomm.robotcore.hardware.DigitalChannel;
 import com.qualcomm.robotcore.hardware.Servo;
 import com.qualcomm.robotcore.util.ElapsedTime;
 import com.qualcomm.robotcore.util.Range;
+import org.firstinspires.ftc.teamcode.MiniPIDJavaMaster.src.com.stormbots.MiniPID;
 
 import org.firstinspires.ftc.ftccommon.internal.manualcontrol.parameters.DigitalAllPinsParameters;
 
@@ -98,6 +101,12 @@ public class KyptenWillCarry extends LinearOpMode {
         inOutRight.setDirection(DcMotorSimple.Direction.FORWARD);
         armSwing.setDirection(DcMotorSimple.Direction.REVERSE);
 
+        MiniPID ArmPID;
+        ArmPID = new MiniPID(1.0,0.2,0.5);
+        ArmPID.setOutputLimits(1);
+        ArmPID.setMaxIOutput(0.3);
+        ArmPID.setSetpoint(0);
+
 
 
         waitForStart();
@@ -135,6 +144,7 @@ public class KyptenWillCarry extends LinearOpMode {
         int armSwingPosition = 0;
         double bumper = 0;
         int bumperaccel = 0;
+        double out = 0;
 
 
         while (opModeIsActive()) {
@@ -191,14 +201,14 @@ public class KyptenWillCarry extends LinearOpMode {
 
             if(bumper != 0){
                 if (bumper > 0){
-                    armSwingPosition += 20 + bumperaccel;
+                    armSwingPosition += 20; //+ bumperaccel;
                     // Added acceleration to the bumpers to minimise jiggling
                     //TODO: Tweak acceleration amount to minimise jiggling
-                    bumperaccel += 1;
+                    //bumperaccel += 1;
                 }
                 else {
-                    armSwingPosition -= 20 - bumperaccel;
-                    bumperaccel -= 1;
+                    armSwingPosition -= 20; //- bumperaccel;
+                    //bumperaccel -= 1;
                 }
                 if (armSwingPosition >= 20){
                     armSwingPosition = -20;
@@ -217,19 +227,13 @@ public class KyptenWillCarry extends LinearOpMode {
 
 
 
-            if(armSwingPosition >= -400){
-                armPower = 0.5;
-            }
-            else{
-                armPower = 1;
-            }
-
-            armSwing.setTargetPosition(armSwingPosition);
 
             inOutRight.setTargetPosition(inOutPosition);
             inOutLeft.setTargetPosition(inOutPosition);
 
-            armSwing.setPower(armPower);
+            ArmPID.setSetpoint(armSwingPosition);
+            out = ArmPID.getOutput(armSwing.getCurrentPosition(), armSwingPosition);
+            armSwing.setPower(out);
 
             inOutRight.setPower(1);
             inOutLeft.setPower(1);
@@ -267,13 +271,10 @@ public class KyptenWillCarry extends LinearOpMode {
             // TELEMETRY
             telemetry.addData("Status", "Run Time: " + runtime);
             telemetry.addData("Motors", "left (%.2f), right (%.2f)", frontLeftPower, frontRightPower, backLeftPower, backRightPower);
-            telemetry.addData("FL Encoder", frontLeftDrive.getCurrentPosition());
-            telemetry.addData("FR Encoder", frontRightDrive.getCurrentPosition());
-            telemetry.addData("BL Encoder", backLeftDrive.getCurrentPosition());
-            telemetry.addData("BR Encoder", backRightDrive.getCurrentPosition());
+            telemetry.addData("Encoders","FL "+frontLeftDrive.getCurrentPosition()+" FR "+frontRightDrive.getCurrentPosition()+
+                "\nBL "+ frontRightDrive.getCurrentPosition()+" BR "+backRightDrive.getCurrentPosition());
 
-            telemetry.addData("Lim L", limL.isPressed());
-            telemetry.addData("Lim R", limR.isPressed());
+            telemetry.addData("Limits","Left "+limL.isPressed()+" Right "+limR.isPressed());
 
             telemetry.addData("teeth", teeth.getPosition());
             telemetry.addData("spin", spin.getPosition());
@@ -283,12 +284,19 @@ public class KyptenWillCarry extends LinearOpMode {
             telemetry.addData("right pos", inOutRight.getCurrentPosition());
             telemetry.addData("Arm Swing", armSwing.getCurrentPosition());
 
-            telemetry.addData("FL Power", frontLeftPower);
-            telemetry.addData("FR Power", frontRightPower);
-            telemetry.addData("BL Power", backLeftPower);
-            telemetry.addData("BR Power", backRightPower);
+            telemetry.addData("Power","FL "+frontLeftPower+" FR "+frontRightPower+
+                "\nBL "+backLeftPower+" BR "+backRightPower);
 
 
+            //FTC DASHBOARD TELEMETRY
+            TelemetryPacket packet = new TelemetryPacket();
+            packet.put("Arm Pos", armSwing.getCurrentPosition());
+            packet.put("Arm Target", armSwingPosition);
+            packet.put("PID Output", out);
+
+            FtcDashboard dashboard = FtcDashboard.getInstance();
+
+            dashboard.sendTelemetryPacket(packet);
 
 
             telemetry.update();
