@@ -65,6 +65,7 @@ public class KyptenWillCarry extends LinearOpMode {
     private DcMotor inOutRight = null;
     private Servo teeth = null;
     private Servo spin = null;
+    private Servo wrist = null;
     private RevTouchSensor limL;
     private RevTouchSensor limR;
 
@@ -86,6 +87,7 @@ public class KyptenWillCarry extends LinearOpMode {
         inOutRight = hardwareMap.get(DcMotor.class, "inOutRight");
         teeth = hardwareMap.get(Servo.class, "teeth");
         spin = hardwareMap.get(Servo.class, "spin");
+        wrist = hardwareMap.get(Servo.class, "wrist");
         limL = hardwareMap.get(RevTouchSensor.class, "limL");
         limR = hardwareMap.get(RevTouchSensor.class,"limR");
 
@@ -157,10 +159,10 @@ public class KyptenWillCarry extends LinearOpMode {
 
             // Setting the 3 intake servos
 
-            // slow mode! //
+            // wrist //
             if (gamepad1.y && !changed) {
-                if (slow == 1) slow = 2;
-                else slow = 1;
+                if (wrist.getPosition() == 0.0) wrist.setPosition(1.0);
+                else wrist.setPosition(0.0);
                 changed = true;
             } else if (!gamepad1.y) changed = false;
             // Slides
@@ -278,6 +280,7 @@ public class KyptenWillCarry extends LinearOpMode {
 
             telemetry.addData("teeth", teeth.getPosition());
             telemetry.addData("spin", spin.getPosition());
+            telemetry.addData("wrist", wrist.getPosition());
 
             telemetry.addData("target pos var", inOutPosition);
             telemetry.addData("left pos", inOutLeft.getCurrentPosition());
