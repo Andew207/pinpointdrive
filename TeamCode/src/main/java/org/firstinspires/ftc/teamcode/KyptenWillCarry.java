@@ -101,10 +101,13 @@ public class KyptenWillCarry extends LinearOpMode {
         backRightDrive.setDirection(DcMotor.Direction.REVERSE);
         inOutLeft.setDirection(DcMotorSimple.Direction.REVERSE);
         inOutRight.setDirection(DcMotorSimple.Direction.FORWARD);
-        armSwing.setDirection(DcMotorSimple.Direction.REVERSE);
+        armSwing.setDirection(DcMotorSimple.Direction.FORWARD);
 
         MiniPID ArmPID;
-        ArmPID = new MiniPID(1.0,0.2,0.5);
+        ArmPID = new MiniPID(1.000,0.000,0.000);
+        //1.0,0.2,0.5 3/25 Doesn't work
+        //0.5,0.2,0.3 3/27-28 Doesn't work
+        //0.2,0.0,0.0
         ArmPID.setOutputLimits(1);
         ArmPID.setMaxIOutput(0.3);
         ArmPID.setSetpoint(0);
@@ -233,19 +236,21 @@ public class KyptenWillCarry extends LinearOpMode {
             inOutRight.setTargetPosition(inOutPosition);
             inOutLeft.setTargetPosition(inOutPosition);
 
-            ArmPID.setSetpoint(armSwingPosition);
-            out = ArmPID.getOutput(armSwing.getCurrentPosition(), armSwingPosition);
-            armSwing.setPower(out);
+
+
 
             inOutRight.setPower(1);
             inOutLeft.setPower(1);
+            armSwing.setTargetPosition(0);
 
-            armSwing.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+            armSwing.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
             inOutRight.setMode(DcMotor.RunMode.RUN_TO_POSITION);
             inOutLeft.setMode(DcMotor.RunMode.RUN_TO_POSITION);
 
 
-
+            ArmPID.setSetpoint(armSwingPosition);
+            out = ArmPID.getOutput(armSwing.getCurrentPosition(), armSwingPosition);
+            armSwing.setPower(out);
 
 
 
@@ -273,10 +278,10 @@ public class KyptenWillCarry extends LinearOpMode {
             // TELEMETRY
             telemetry.addData("Status", "Run Time: " + runtime);
             telemetry.addData("Motors", "left (%.2f), right (%.2f)", frontLeftPower, frontRightPower, backLeftPower, backRightPower);
-            telemetry.addData("Encoders","FL "+frontLeftDrive.getCurrentPosition()+" FR "+frontRightDrive.getCurrentPosition()+
-                "\nBL "+ frontRightDrive.getCurrentPosition()+" BR "+backRightDrive.getCurrentPosition());
+            telemetry.addData("Encoders","FL:"+frontLeftDrive.getCurrentPosition()+" FR:"+frontRightDrive.getCurrentPosition()+
+                "\nBL:"+ frontRightDrive.getCurrentPosition()+" BR:"+backRightDrive.getCurrentPosition());
 
-            telemetry.addData("Limits","Left "+limL.isPressed()+" Right "+limR.isPressed());
+            telemetry.addData("Limits","Left:"+limL.isPressed()+" Right:"+limR.isPressed());
 
             telemetry.addData("teeth", teeth.getPosition());
             telemetry.addData("spin", spin.getPosition());
@@ -286,8 +291,9 @@ public class KyptenWillCarry extends LinearOpMode {
             telemetry.addData("left pos", inOutLeft.getCurrentPosition());
             telemetry.addData("right pos", inOutRight.getCurrentPosition());
             telemetry.addData("Arm Swing", armSwing.getCurrentPosition());
+            telemetry.addData("Arm Swing Var", armSwingPosition);
 
-            telemetry.addData("Power","FL "+frontLeftPower+" FR "+frontRightPower+
+            telemetry.addData("Power","FL:"+frontLeftPower+" FR:"+frontRightPower+
                 "\nBL "+backLeftPower+" BR "+backRightPower);
 
 
