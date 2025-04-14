@@ -256,6 +256,7 @@ public class MiniPID{
 		double Doutput;
 		double Foutput;
 
+
 		this.setpoint=setpoint;
 
 		// Ramp the setpoint used for calculations if user has opted to do so

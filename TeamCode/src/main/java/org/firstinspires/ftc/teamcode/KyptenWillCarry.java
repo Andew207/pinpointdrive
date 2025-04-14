@@ -33,7 +33,10 @@
 // Importing things
 package org.firstinspires.ftc.teamcode;
 
+import static org.firstinspires.ftc.teamcode.ConfigConstant.*;
+
 import com.acmerobotics.dashboard.FtcDashboard;
+import com.acmerobotics.dashboard.config.Config;
 import com.acmerobotics.dashboard.telemetry.TelemetryPacket;
 import com.qualcomm.hardware.rev.RevTouchSensor;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
@@ -47,7 +50,6 @@ import com.qualcomm.robotcore.util.Range;
 import org.firstinspires.ftc.teamcode.MiniPIDJavaMaster.src.com.stormbots.MiniPID;
 
 import org.firstinspires.ftc.ftccommon.internal.manualcontrol.parameters.DigitalAllPinsParameters;
-
 
 // Setup
 @TeleOp(name="Kypten Will Carry", group="Linear Opmode")
@@ -68,6 +70,7 @@ public class KyptenWillCarry extends LinearOpMode {
     private Servo wrist = null;
     private RevTouchSensor limL;
     private RevTouchSensor limR;
+
 
     //timer
     private final ElapsedTime timer = new ElapsedTime();
@@ -103,13 +106,16 @@ public class KyptenWillCarry extends LinearOpMode {
         inOutRight.setDirection(DcMotorSimple.Direction.FORWARD);
         armSwing.setDirection(DcMotorSimple.Direction.FORWARD);
 
+
         MiniPID ArmPID;
-        ArmPID = new MiniPID(1.000,0.000,0.000);
-        //1.0,0.2,0.5 3/25 Doesn't work
-        //0.5,0.2,0.3 3/27-28 Doesn't work
-        //0.2,0.0,0.0
-        ArmPID.setOutputLimits(1);
-        ArmPID.setMaxIOutput(0.3);
+        ArmPID = new MiniPID(p,i,d);
+
+
+        ArmPID.setOutputLimits(-0.5,0.02);
+        ArmPID.setMaxIOutput(0.15);
+        ArmPID.setOutputRampRate(ramp);
+        ArmPID.setSetpointRange(setrge);
+        ArmPID.setOutputFilter(outfltr);
         ArmPID.setSetpoint(0);
 
 
@@ -249,9 +255,13 @@ public class KyptenWillCarry extends LinearOpMode {
 
 
             ArmPID.setSetpoint(armSwingPosition);
-            out = ArmPID.getOutput(armSwing.getCurrentPosition(), armSwingPosition);
+            out = ArmPID.getOutput(armSwing.getCurrentPosition());
             armSwing.setPower(out);
 
+            ArmPID.setPID(p,i,d); // debug stick be like
+            ArmPID.setOutputRampRate(ramp);
+            ArmPID.setSetpointRange(setrge);
+            ArmPID.setOutputFilter(outfltr);
 
 
 
@@ -291,7 +301,8 @@ public class KyptenWillCarry extends LinearOpMode {
             telemetry.addData("left pos", inOutLeft.getCurrentPosition());
             telemetry.addData("right pos", inOutRight.getCurrentPosition());
             telemetry.addData("Arm Swing", armSwing.getCurrentPosition());
-            telemetry.addData("Arm Swing Var", armSwingPosition);
+            telemetry.addData("Arm Swing Target", armSwingPosition);
+            telemetry.addData("PID out",out);
 
             telemetry.addData("Power","FL:"+frontLeftPower+" FR:"+frontRightPower+
                 "\nBL "+backLeftPower+" BR "+backRightPower);
@@ -302,6 +313,8 @@ public class KyptenWillCarry extends LinearOpMode {
             packet.put("Arm Pos", armSwing.getCurrentPosition());
             packet.put("Arm Target", armSwingPosition);
             packet.put("PID Output", out);
+            packet.put("Power", armSwing.getPower());
+
 
             FtcDashboard dashboard = FtcDashboard.getInstance();
 
