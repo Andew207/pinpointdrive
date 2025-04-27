@@ -16,18 +16,20 @@ class ArmSwing(hardwareMap: HardwareMap) {
     enum class ArmState(val position: Int) {
         Score1(1900),
         Score2(1750),
-        ThroughBars2(1400),
+        ThroughBars2(1380),
+        ThroughBars3(1040),
         ThroughBars1(1030),
         CornerPickup(250),
         Neutral(400),
-        Wall(720),
-        PickUp(100)
+        Wall(665),
+        PickUp(90)
 
     }
 
     var armState = ArmState.Neutral
 
     private val armSwing = hardwareMap.get(DcMotor::class.java, "armSwing")
+
 
     private val power = 1.0
 
@@ -80,6 +82,7 @@ class ArmSwing(hardwareMap: HardwareMap) {
 
     fun throughBars1(): Action = SetState(ArmState.ThroughBars1)
     fun throughBars2(): Action = SetState(ArmState.ThroughBars2)
+    fun throughBars3(): Action = SetState(ArmState.ThroughBars3)
     fun neutral(): Action = SetState(ArmState.Neutral)
     fun corner(): Action = SetState(ArmState.CornerPickup)
     fun pickup(): Action = SetState(ArmState.PickUp)

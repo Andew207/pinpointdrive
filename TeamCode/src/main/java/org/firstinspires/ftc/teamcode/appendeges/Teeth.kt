@@ -14,9 +14,9 @@ class Teeth(hardwareMap: HardwareMap) {
      * @param position the position of the scoringArm in that state, -1 means we don't currently
      * know the position of the scoringArm
      */
-    enum class TeethPos(val position: Int) {
-        Open(0),
-        Closed(1)
+    enum class TeethPos(val position: Double) {
+        Open(0.337),
+        Closed(1.0)
 
     }
 

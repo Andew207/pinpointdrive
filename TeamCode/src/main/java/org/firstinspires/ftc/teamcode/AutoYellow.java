@@ -16,19 +16,17 @@ import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 
 import org.firstinspires.ftc.robotcore.external.navigation.DistanceUnit;
 import org.firstinspires.ftc.teamcode.appendeges.ArmSwing;
-import org.firstinspires.ftc.teamcode.appendeges.Teeth;
 import org.firstinspires.ftc.teamcode.appendeges.Reach;
 import org.firstinspires.ftc.teamcode.appendeges.Spin;
-
-import org.firstinspires.ftc.teamcode.drive.GoBildaPinpointDriver;
+import org.firstinspires.ftc.teamcode.appendeges.Teeth;
 import org.firstinspires.ftc.teamcode.drive.PinpointDrive;
 
 import java.util.Arrays;
 
 @Autonomous
-public class AutoL extends LinearOpMode {
+public class AutoYellow extends LinearOpMode {
     public void runOpMode() {
-        Pose2d beginPose = new Pose2d(-15, -64.5, 0);
+        Pose2d beginPose = new Pose2d(-38.5, -64.5, 0);
         Pose2d pose = new Pose2d(0,0,0);
 
         ArmSwing armSwing = new ArmSwing(hardwareMap);
@@ -59,28 +57,41 @@ public class AutoL extends LinearOpMode {
       /*////////////////////////////////////////////////////////////////////////////////////////////
       Start of Auto LEFT Start of Auto LEFT Start of Auto LEFT Start of Auto LEFT Start of Auto LEFT
       ////////////////////////////////////////////////////////////////////////////////////////////*/
-        Actions.runBlocking(new SequentialAction(
-                // Put first SPECIMEN on bars
-                armSwing.pickup(),
-                teeth.closed(),
-                armSwing.throughBars1(),
-                new ParallelAction(
-                        spin.straight(),
-                        drive.actionBuilder(beginPose)
-                                .strafeTo(new Vector2d(-8,-39))
 
-                                .build()
-                    ),
-                armSwing.throughBars2(),
-                // Go to the left side to grab first block
-                drive.actionBuilder(new Pose2d(-8,-39, 0))
-                        .strafeTo(new Vector2d(-8,-45))
+
+        Actions.runBlocking(teeth.closed());
+
+        Actions.runBlocking(armSwing.score1());
+        sleep(500);
+        telemetry.update();
+
+
+        Actions.runBlocking(new SequentialAction(
+                // Reach out to the bucket
+                reach.out(),
+
+                drive.actionBuilder(new Pose2d(-51, -55, 0))
+                        .turn(Math.toRadians(135))
                         .build(),
-                teeth.open(),
-                armSwing.neutral(),
-                drive.actionBuilder(new Pose2d(-8,-45, 0))
-                        .strafeTo(new Vector2d(-28,-45))
-                        .build()
+
+                armSwing.score2()
+        ));
+
+
+
+        // Let go of the first block
+        sleep(1000);
+        Actions.runBlocking(teeth.open());
+        sleep(500);
+        Actions.runBlocking(armSwing.score1());
+        sleep(250);
+        Actions.runBlocking(new SequentialAction(
+                reach.inn(),
+                drive.actionBuilder(new Pose2d(-51,-55, 0))
+                        .strafeTo(new Vector2d(-47,-45))
+                        .build(),
+                armSwing.neutral()
+
         ));
 
         telemetry.addData("Odometry x", drive.getPose().position.x);
@@ -95,7 +106,7 @@ public class AutoL extends LinearOpMode {
 
 
                 new ParallelAction(
-                        drive.actionBuilder(new Pose2d(-28, -45, 0))
+                        drive.actionBuilder(new Pose2d(-47, -45, 0))
                                 .strafeTo(new Vector2d(-47,-37.5), baseVelConstraint, baseAccelConstraint)
                                 .build()
                 )

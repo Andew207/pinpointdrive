@@ -25,19 +25,12 @@
  * CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY,
  * OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
  * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
- * claw stuff:
- * 0.45 - 1
  */
 
 
 // Importing things
 package org.firstinspires.ftc.teamcode;
 
-import static org.firstinspires.ftc.teamcode.ConfigConstant.*;
-
-import com.acmerobotics.dashboard.FtcDashboard;
-import com.acmerobotics.dashboard.config.Config;
-import com.acmerobotics.dashboard.telemetry.TelemetryPacket;
 import com.qualcomm.hardware.rev.RevTouchSensor;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
@@ -47,9 +40,9 @@ import com.qualcomm.robotcore.hardware.DigitalChannel;
 import com.qualcomm.robotcore.hardware.Servo;
 import com.qualcomm.robotcore.util.ElapsedTime;
 import com.qualcomm.robotcore.util.Range;
-import org.firstinspires.ftc.teamcode.MiniPIDJavaMaster.src.com.stormbots.MiniPID;
 
 import org.firstinspires.ftc.ftccommon.internal.manualcontrol.parameters.DigitalAllPinsParameters;
+
 
 // Setup
 @TeleOp(name="Kypten Will Carry", group="Linear Opmode")
@@ -67,9 +60,11 @@ public class KyptenWillCarry extends LinearOpMode {
     private DcMotor inOutRight = null;
     private Servo teeth = null;
     private Servo spin = null;
-    private Servo wrist = null;
     private RevTouchSensor limL;
     private RevTouchSensor limR;
+    private Servo handsUpL;
+    private Servo handsUpR;
+    private Servo wrist;
 
 
     //timer
@@ -90,9 +85,12 @@ public class KyptenWillCarry extends LinearOpMode {
         inOutRight = hardwareMap.get(DcMotor.class, "inOutRight");
         teeth = hardwareMap.get(Servo.class, "teeth");
         spin = hardwareMap.get(Servo.class, "spin");
-        wrist = hardwareMap.get(Servo.class, "wrist");
         limL = hardwareMap.get(RevTouchSensor.class, "limL");
         limR = hardwareMap.get(RevTouchSensor.class,"limR");
+        handsUpL = hardwareMap.get(Servo.class, "handsUpL");
+        handsUpR = hardwareMap.get(Servo.class, "handsUpR");
+        wrist = hardwareMap.get(Servo.class, "wrist");
+
 
         int slow = 1;
 
@@ -104,21 +102,9 @@ public class KyptenWillCarry extends LinearOpMode {
         backRightDrive.setDirection(DcMotor.Direction.REVERSE);
         inOutLeft.setDirection(DcMotorSimple.Direction.REVERSE);
         inOutRight.setDirection(DcMotorSimple.Direction.FORWARD);
-        armSwing.setDirection(DcMotorSimple.Direction.FORWARD);
+        armSwing.setDirection(DcMotorSimple.Direction.REVERSE);
 
-
-        MiniPID ArmPID;
-        ArmPID = new MiniPID(p,i,d);
-
-
-        ArmPID.setOutputLimits(-0.5,0.02);
-        ArmPID.setMaxIOutput(0.15);
-        ArmPID.setOutputRampRate(ramp);
-        ArmPID.setSetpointRange(setrge);
-        ArmPID.setOutputFilter(outfltr);
-        ArmPID.setSetpoint(0);
-
-
+        wrist.setPosition(0);
 
         waitForStart();
         runtime.reset();
@@ -141,6 +127,8 @@ public class KyptenWillCarry extends LinearOpMode {
         boolean changed = false;
         boolean changed1 = false;
         boolean changed2 = false;
+        boolean changed3 = false;
+        boolean changed4 = false;
 
         double drive;
         double strafe;
@@ -154,8 +142,9 @@ public class KyptenWillCarry extends LinearOpMode {
         double teethPos = 0;
         int armSwingPosition = 0;
         double bumper = 0;
-        int bumperaccel = 0;
-        double out = 0;
+        double hands = 0.2;
+        boolean backarm = false;
+
 
 
         while (opModeIsActive()) {
@@ -168,10 +157,10 @@ public class KyptenWillCarry extends LinearOpMode {
 
             // Setting the 3 intake servos
 
-            // wrist //
+            // slow mode! //
             if (gamepad1.y && !changed) {
-                if (wrist.getPosition() == 0.0) wrist.setPosition(1.0);
-                else wrist.setPosition(0.0);
+                if (slow == 1) slow = 2;
+                else slow = 1;
                 changed = true;
             } else if (!gamepad1.y) changed = false;
             // Slides
@@ -198,8 +187,8 @@ public class KyptenWillCarry extends LinearOpMode {
             } else if (!gamepad1.x) changed1 = false;
 
             if (gamepad1.a && !changed2) {
-                if (teethPos == 1) teethPos = 0;
-                else teethPos = 1;
+                if (teethPos ==.9) teethPos = 0.35;
+                else teethPos = .9;
                 changed2 = true;
             } else if(!gamepad1.a) changed2 = false;
 
@@ -212,56 +201,89 @@ public class KyptenWillCarry extends LinearOpMode {
 
             if(bumper != 0){
                 if (bumper > 0){
-                    armSwingPosition += 20; //+ bumperaccel;
-                    // Added acceleration to the bumpers to minimise jiggling
-                    //TODO: Tweak acceleration amount to minimise jiggling
-                    //bumperaccel += 1;
+                    armSwingPosition += 30;
                 }
-                else {
-                    armSwingPosition -= 20; //- bumperaccel;
-                    //bumperaccel -= 1;
-                }
-                if (armSwingPosition >= 20){
-                    armSwingPosition = -20;
+                else
+                    armSwingPosition -= 30;
+                if (armSwingPosition >= 30){
+                    armSwingPosition = -30;
                 }
             }
-            if (armSwingPosition < -1900){
-                armSwingPosition = -1890;
+            if (armSwingPosition < -2300){
+                armSwingPosition = -2280;
             }
+
+            if (gamepad2.right_bumper)hands = 0.8;
+            if (gamepad2.left_bumper)hands = 0.6;
+            if (gamepad2.a)hands = 0.2;
 
             if(gamepad1.b) {
 
-                    armSwingPosition = -1990;
+                    armSwingPosition = -2300;
                     inOutPosition = 3500;
 
             }
 
+            if(gamepad1.right_stick_button && !changed4 && !backarm){
+
+                if(wrist.getPosition() == 0.9) {
+                    wrist.setPosition(0.6);
+                    changed4 = true;
+                }
+                else{
+                    wrist.setPosition(0.9);
+                    changed4 = true;
+                }
+            }
+
+            else if(!gamepad1.right_stick_button)
+                changed4 = false;
+
+            if (armSwingPosition < -2200){
+                backarm = true;
+                wrist.setPosition(0.2);
+            }
+            else
+                backarm = false;
+
+            if(gamepad1.dpad_down)armSwingPosition = -650;
+            if(gamepad1.dpad_up){
+                changed3 = true;
+                frontLeftDrive.setPower(-0.2);
+                frontRightDrive.setPower(0.2);
+                backLeftDrive.setPower(0.2);
+                backRightDrive.setPower(-0.2);
+            }
+            else changed3 = false;
 
 
+            if(armSwingPosition >= -400){
+                armPower = 0.5;
+            }
+            else{
+                armPower = 1;
+            }
+
+            armSwing.setTargetPosition(armSwingPosition);
 
             inOutRight.setTargetPosition(inOutPosition);
             inOutLeft.setTargetPosition(inOutPosition);
 
-
-
+            armSwing.setPower(armPower);
 
             inOutRight.setPower(1);
             inOutLeft.setPower(1);
-            armSwing.setTargetPosition(0);
 
-            armSwing.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+            handsUpL.setPosition(hands);
+            handsUpR.setPosition(hands);
+
+            armSwing.setMode(DcMotor.RunMode.RUN_TO_POSITION);
             inOutRight.setMode(DcMotor.RunMode.RUN_TO_POSITION);
             inOutLeft.setMode(DcMotor.RunMode.RUN_TO_POSITION);
 
 
-            ArmPID.setSetpoint(armSwingPosition);
-            out = ArmPID.getOutput(armSwing.getCurrentPosition());
-            armSwing.setPower(out);
 
-            ArmPID.setPID(p,i,d); // debug stick be like
-            ArmPID.setOutputRampRate(ramp);
-            ArmPID.setSetpointRange(setrge);
-            ArmPID.setOutputFilter(outfltr);
+
 
 
 
@@ -279,46 +301,30 @@ public class KyptenWillCarry extends LinearOpMode {
             backLeftPower = Range.clip((drive - strafe + turn) / slow, -1, 1);
             backRightPower = Range.clip((drive + strafe + turn) / slow, -1, 1);
 
-            frontLeftDrive.setPower(frontLeftPower);
-            backLeftDrive.setPower(backLeftPower);
-            frontRightDrive.setPower(frontRightPower);
-            backRightDrive.setPower(backRightPower);
-
+            if(!changed3) {
+                frontLeftDrive.setPower(frontLeftPower);
+                backLeftDrive.setPower(backLeftPower);
+                frontRightDrive.setPower(frontRightPower);
+                backRightDrive.setPower(backRightPower);
+            }
 
             // TELEMETRY
             telemetry.addData("Status", "Run Time: " + runtime);
             telemetry.addData("Motors", "left (%.2f), right (%.2f)", frontLeftPower, frontRightPower, backLeftPower, backRightPower);
-            telemetry.addData("Encoders","FL:"+frontLeftDrive.getCurrentPosition()+" FR:"+frontRightDrive.getCurrentPosition()+
-                "\nBL:"+ frontRightDrive.getCurrentPosition()+" BR:"+backRightDrive.getCurrentPosition());
-
-            telemetry.addData("Limits","Left:"+limL.isPressed()+" Right:"+limR.isPressed());
-
-            telemetry.addData("teeth", teeth.getPosition());
-            telemetry.addData("spin", spin.getPosition());
-            telemetry.addData("wrist", wrist.getPosition());
-
-            telemetry.addData("target pos var", inOutPosition);
-            telemetry.addData("left pos", inOutLeft.getCurrentPosition());
-            telemetry.addData("right pos", inOutRight.getCurrentPosition());
+            telemetry.addData("FL Encoder", frontLeftDrive.getCurrentPosition());
+            telemetry.addData("FR Encoder", frontRightDrive.getCurrentPosition());
+            telemetry.addData("BL Encoder", backLeftDrive.getCurrentPosition());
+            telemetry.addData("BR Encoder", backRightDrive.getCurrentPosition());
+            telemetry.addData("Arm Target Pos", armSwing.getTargetPosition());
             telemetry.addData("Arm Swing", armSwing.getCurrentPosition());
-            telemetry.addData("Arm Swing Target", armSwingPosition);
-            telemetry.addData("PID out",out);
-
-            telemetry.addData("Power","FL:"+frontLeftPower+" FR:"+frontRightPower+
-                "\nBL "+backLeftPower+" BR "+backRightPower);
 
 
-            //FTC DASHBOARD TELEMETRY
-            TelemetryPacket packet = new TelemetryPacket();
-            packet.put("Arm Pos", armSwing.getCurrentPosition());
-            packet.put("Arm Target", armSwingPosition);
-            packet.put("PID Output", out);
-            packet.put("Power", armSwing.getPower());
+            telemetry.addData("FL Power", frontLeftPower);
+            telemetry.addData("FR Power", frontRightPower);
+            telemetry.addData("BL Power", backLeftPower);
+            telemetry.addData("BR Power", backRightPower);
 
 
-            FtcDashboard dashboard = FtcDashboard.getInstance();
-
-            dashboard.sendTelemetryPacket(packet);
 
 
             telemetry.update();

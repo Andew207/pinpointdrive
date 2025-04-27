@@ -58,6 +58,8 @@ public class ThePowerOfFriendship extends LinearOpMode {
     private Servo spin = null;
     private RevTouchSensor limL;
     private RevTouchSensor limR;
+    private Servo handsUpL;
+    private Servo handsUpR;
 
     //timer
     private final ElapsedTime timer = new ElapsedTime();
@@ -79,6 +81,9 @@ public class ThePowerOfFriendship extends LinearOpMode {
         spin = hardwareMap.get(Servo.class, "spin");
         limL = hardwareMap.get(RevTouchSensor.class, "limL");
         limR = hardwareMap.get(RevTouchSensor.class,"limR");
+        handsUpL = hardwareMap.get(Servo.class, "handsUpL");
+        handsUpR = hardwareMap.get(Servo.class, "handsUpR");
+
 
         int slow = 1;
 
@@ -114,6 +119,7 @@ public class ThePowerOfFriendship extends LinearOpMode {
         // Declare random variables
         boolean changed = false;
         boolean changed1 = false;
+        boolean changed2 = false;
 
         double drive;
         double strafe;
@@ -127,6 +133,7 @@ public class ThePowerOfFriendship extends LinearOpMode {
         double teethPos = 0;
         int armSwingPosition = 0;
         double bumper = 0;
+        double hands = 0.2;
 
 
 
@@ -169,10 +176,12 @@ public class ThePowerOfFriendship extends LinearOpMode {
                 changed1 = true;
             } else if (!gamepad2.x) changed1 = false;
 
-            if (gamepad2.a)
-                teethPos = 0;
-            else /*if(gamepad1.a && teethPos == 1)*/
-                teethPos = 1;
+            if (gamepad2.a && !changed2) {
+                if (teethPos == 1) teethPos = 0.337;
+                else teethPos = 1;
+                changed2 = true;
+            } else if(!gamepad2.a) changed2 = false;
+
             //bumper is a control variable
             if(gamepad1.left_bumper)
                 bumper = 1;
@@ -202,6 +211,9 @@ public class ThePowerOfFriendship extends LinearOpMode {
 
             }
 
+            if (gamepad2.right_bumper)hands = 0.7;
+            if (gamepad2.left_bumper)hands = 0.5;
+            if (gamepad2.a)hands = 0.2;
 
 
             if(armSwingPosition >= -400){
@@ -230,6 +242,8 @@ public class ThePowerOfFriendship extends LinearOpMode {
 
 
 
+            handsUpL.setPosition(hands);
+            handsUpR.setPosition(hands);
 
 
 
