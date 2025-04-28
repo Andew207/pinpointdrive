@@ -31,6 +31,8 @@
 // Importing things
 package org.firstinspires.ftc.teamcode;
 
+import com.acmerobotics.dashboard.FtcDashboard;
+import com.acmerobotics.dashboard.telemetry.TelemetryPacket;
 import com.qualcomm.hardware.rev.RevTouchSensor;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
@@ -105,6 +107,10 @@ public class KyptenWillCarry extends LinearOpMode {
         armSwing.setDirection(DcMotorSimple.Direction.REVERSE);
 
         wrist.setPosition(0);
+
+        armSwing.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+        armSwing.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+        armSwing.setTargetPosition(150);
 
         waitForStart();
         runtime.reset();
@@ -224,7 +230,7 @@ public class KyptenWillCarry extends LinearOpMode {
 
             }
 
-            if(gamepad1.right_stick_button && !changed4 && !backarm){
+            if(gamepad1.dpad_left && !changed4 && !backarm){
 
                 if(wrist.getPosition() == 0.9) {
                     wrist.setPosition(0.6);
@@ -236,7 +242,7 @@ public class KyptenWillCarry extends LinearOpMode {
                 }
             }
 
-            else if(!gamepad1.right_stick_button)
+            else if(!gamepad1.dpad_left)
                 changed4 = false;
 
             if (armSwingPosition < -2200){
@@ -325,6 +331,26 @@ public class KyptenWillCarry extends LinearOpMode {
             telemetry.addData("BR Power", backRightPower);
 
 
+            //FTC DASHBOARD TELEMETRY
+            TelemetryPacket packet = new TelemetryPacket();
+
+            packet.put("Status", "Run Time: " + runtime);
+            packet.put("FL Motor Power",frontLeftPower);
+            packet.put("FR Motor Power",frontRightPower);
+            packet.put("BL Motor Power",backLeftPower);
+            packet.put("BR Motor Power",backRightPower);
+            packet.put("FL Encoder", frontLeftDrive.getCurrentPosition());
+            packet.put("FR Encoder", frontRightDrive.getCurrentPosition());
+            packet.put("BL Encoder", backLeftDrive.getCurrentPosition());
+            packet.put("BR Encoder", backRightDrive.getCurrentPosition());
+            packet.put("Arm Target Pos", armSwing.getTargetPosition());
+            packet.put("Arm Current Pos", armSwing.getCurrentPosition());
+            packet.put("Wrist Pos",wrist.getPosition());
+            packet.put("Spin",spin.getPosition());
+
+            FtcDashboard dashboard = FtcDashboard.getInstance();
+
+            dashboard.sendTelemetryPacket(packet);
 
 
             telemetry.update();

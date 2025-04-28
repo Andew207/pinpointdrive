@@ -20,6 +20,7 @@ import org.firstinspires.ftc.teamcode.appendeges.Teeth;
 import org.firstinspires.ftc.teamcode.appendeges.Reach;
 import org.firstinspires.ftc.teamcode.appendeges.Spin;
 
+import org.firstinspires.ftc.teamcode.appendeges.Wrist;
 import org.firstinspires.ftc.teamcode.drive.GoBildaPinpointDriver;
 import org.firstinspires.ftc.teamcode.drive.PinpointDrive;
 
@@ -35,6 +36,7 @@ public class AutoL extends LinearOpMode {
         Teeth teeth = new Teeth(hardwareMap);
         Reach reach = new Reach(hardwareMap);
         Spin spin = new Spin(hardwareMap);
+        Wrist wrist = new Wrist(hardwareMap);
 
 
 
@@ -61,6 +63,7 @@ public class AutoL extends LinearOpMode {
       ////////////////////////////////////////////////////////////////////////////////////////////*/
         Actions.runBlocking(new SequentialAction(
                 // Put first SPECIMEN on bars
+                wrist.offset(),
                 armSwing.pickup(),
                 teeth.closed(),
                 armSwing.throughBars1(),

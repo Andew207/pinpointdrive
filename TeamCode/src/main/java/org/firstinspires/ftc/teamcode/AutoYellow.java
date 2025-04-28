@@ -13,12 +13,14 @@ import com.acmerobotics.roadrunner.VelConstraint;
 import com.acmerobotics.roadrunner.ftc.Actions;
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
+import com.qualcomm.robotcore.hardware.DcMotor;
 
 import org.firstinspires.ftc.robotcore.external.navigation.DistanceUnit;
 import org.firstinspires.ftc.teamcode.appendeges.ArmSwing;
 import org.firstinspires.ftc.teamcode.appendeges.Reach;
 import org.firstinspires.ftc.teamcode.appendeges.Spin;
 import org.firstinspires.ftc.teamcode.appendeges.Teeth;
+import org.firstinspires.ftc.teamcode.appendeges.Wrist;
 import org.firstinspires.ftc.teamcode.drive.PinpointDrive;
 
 import java.util.Arrays;
@@ -33,6 +35,7 @@ public class AutoYellow extends LinearOpMode {
         Teeth teeth = new Teeth(hardwareMap);
         Reach reach = new Reach(hardwareMap);
         Spin spin = new Spin(hardwareMap);
+        Wrist wrist = new Wrist(hardwareMap);
 
 
 
@@ -40,6 +43,7 @@ public class AutoYellow extends LinearOpMode {
         PinpointDrive drive = new PinpointDrive(hardwareMap, beginPose);
 
 
+        armSwing.init();
 
 
 
@@ -60,6 +64,7 @@ public class AutoYellow extends LinearOpMode {
 
 
         Actions.runBlocking(teeth.closed());
+        Actions.runBlocking(wrist.offset());
 
         Actions.runBlocking(armSwing.score1());
         sleep(500);

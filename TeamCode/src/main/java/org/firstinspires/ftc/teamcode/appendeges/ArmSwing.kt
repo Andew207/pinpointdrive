@@ -22,7 +22,8 @@ class ArmSwing(hardwareMap: HardwareMap) {
         CornerPickup(250),
         Neutral(400),
         Wall(665),
-        PickUp(90)
+        PickUp(90),
+        Init(-150)
 
     }
 
@@ -39,7 +40,9 @@ class ArmSwing(hardwareMap: HardwareMap) {
     init {
         armSwing.mode = DcMotor.RunMode.STOP_AND_RESET_ENCODER
         armSwing.direction = DcMotorSimple.Direction.FORWARD
-        armSwing.targetPosition = 0
+        armSwing.targetPosition = -150
+        armSwing.mode = DcMotor.RunMode.RUN_TO_POSITION
+        armSwing.mode = DcMotor.RunMode.STOP_AND_RESET_ENCODER
         armSwing.mode = DcMotor.RunMode.RUN_TO_POSITION
         armSwing.power = power
     }
@@ -89,5 +92,6 @@ class ArmSwing(hardwareMap: HardwareMap) {
     fun score1(): Action = SetState(ArmState.Score1)
     fun score2(): Action = SetState(ArmState.Score2)
     fun wall(): Action = SetState(ArmState.Wall)
+    fun init(): Action = SetState(ArmState.Init)
 
 }
