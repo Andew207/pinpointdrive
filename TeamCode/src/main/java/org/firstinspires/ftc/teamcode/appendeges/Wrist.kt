@@ -15,9 +15,9 @@ class Wrist(hardwareMap: HardwareMap) {
      * know the position of the scoringArm
      */
     enum class WristPos(val position: Double) {
-        Offset(0.2),
-        Straight(0.9)
-
+        Offset(0.9),
+        Straight(0.6),
+        Back(0.4)
     }
 
 
@@ -65,5 +65,6 @@ class Wrist(hardwareMap: HardwareMap) {
     //TODO: change functions to wrist functions
     fun offset(): Action = SetState(WristPos.Offset)
     fun straight(): Action = SetState(WristPos.Straight)
+    fun back(): Action = SetState(WristPos.Back)
 
 }

@@ -39,7 +39,6 @@ public class AutoYellow extends LinearOpMode {
 
 
 
-
         PinpointDrive drive = new PinpointDrive(hardwareMap, beginPose);
 
 
@@ -61,10 +60,12 @@ public class AutoYellow extends LinearOpMode {
       /*////////////////////////////////////////////////////////////////////////////////////////////
       Start of Auto LEFT Start of Auto LEFT Start of Auto LEFT Start of Auto LEFT Start of Auto LEFT
       ////////////////////////////////////////////////////////////////////////////////////////////*/
-
+        telemetry.addData("Odometry x", drive.getPose().position.x);
+        telemetry.addData("Odometry y", drive.getPose().position.y);
+        telemetry.addData("Odo Pos x", drive.pinpoint.getPosition().getX(DistanceUnit.INCH));
+        telemetry.addData("Odo Pos y", drive.pinpoint.getPosition().getY(DistanceUnit.INCH));
 
         Actions.runBlocking(teeth.closed());
-        Actions.runBlocking(wrist.offset());
 
         Actions.runBlocking(armSwing.score1());
         sleep(500);
@@ -75,15 +76,20 @@ public class AutoYellow extends LinearOpMode {
                 // Reach out to the bucket
                 reach.out(),
 
-                drive.actionBuilder(new Pose2d(-51, -55, 0))
-                        .turn(Math.toRadians(135))
+                drive.actionBuilder(new Pose2d(-56, -60, 0))
+                        .turn(Math.toRadians(-45))
                         .build(),
 
-                armSwing.score2()
+                armSwing.score2(),
+                wrist.back()
         ));
 
+        telemetry.update();
 
 
+        sleep(250);
+        Actions.runBlocking(teeth.open());
+        /*
         // Let go of the first block
         sleep(1000);
         Actions.runBlocking(teeth.open());
@@ -99,10 +105,7 @@ public class AutoYellow extends LinearOpMode {
 
         ));
 
-        telemetry.addData("Odometry x", drive.getPose().position.x);
-        telemetry.addData("Odometry y", drive.getPose().position.y);
-        telemetry.addData("Odo Pos x", drive.pinpoint.getPosition().getX(DistanceUnit.INCH));
-        telemetry.addData("Odo Pos y", drive.pinpoint.getPosition().getY(DistanceUnit.INCH));
+
 
 
 
@@ -262,7 +265,8 @@ public class AutoYellow extends LinearOpMode {
                         reach.inn()),
                 armSwing.neutral()
         ));
-        sleep(1000);
+        */
+        sleep(10000);
 
 
 
