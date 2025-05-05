@@ -109,8 +109,8 @@ public class KyptenWillCarry extends LinearOpMode {
         wrist.setPosition(0);
 
         armSwing.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
-        armSwing.setMode(DcMotor.RunMode.RUN_TO_POSITION);
         armSwing.setTargetPosition(150);
+        armSwing.setMode(DcMotor.RunMode.RUN_TO_POSITION);
 
         waitForStart();
         runtime.reset();
@@ -226,7 +226,7 @@ public class KyptenWillCarry extends LinearOpMode {
             if(gamepad1.b) {
 
                     armSwingPosition = -2300;
-                    inOutPosition = 3500;
+                    inOutPosition = 1800;
 
             }
 
@@ -247,7 +247,7 @@ public class KyptenWillCarry extends LinearOpMode {
 
             if (armSwingPosition < -2200){
                 backarm = true;
-                wrist.setPosition(0.2);
+                wrist.setPosition(0.3);
             }
             else
                 backarm = false;

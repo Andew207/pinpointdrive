@@ -67,7 +67,7 @@ public class AutoYellow extends LinearOpMode {
 
         Actions.runBlocking(teeth.closed());
 
-        Actions.runBlocking(armSwing.score1());
+        Actions.runBlocking(armSwing.score2());
         sleep(500);
         telemetry.update();
 
@@ -80,21 +80,104 @@ public class AutoYellow extends LinearOpMode {
                         .turn(Math.toRadians(-45))
                         .build(),
 
-                armSwing.score2(),
-                wrist.back()
+                armSwing.score2()
         ));
+        sleep(250);
+        Actions.runBlocking(wrist.back());
 
         telemetry.update();
 
-
+        Actions.runBlocking(armSwing.pickup());
         sleep(250);
         Actions.runBlocking(teeth.open());
+        sleep(250);
+        //////////////////////////////////////!!Untested!!//////////////////////////////////////
+        //Get Second Block
+        wrist.offset();
+        Actions.runBlocking(new SequentialAction(
+                drive.actionBuilder(new Pose2d(-51,-55,0))
+                        .build()));
+        sleep(250);
+        Actions.runBlocking(teeth.closed());
+        Actions.runBlocking(armSwing.score2());
+        sleep(500);
+        telemetry.update();
+                // Reach out to the bucket
+        Actions.runBlocking(new SequentialAction(
+                reach.out(),
+
+                drive.actionBuilder(new Pose2d(-56, -60, 0))
+                        .turn(Math.toRadians(-45))
+                        .build(),
+
+                armSwing.score2()
+                ));
+        sleep(250);
+        Actions.runBlocking(wrist.back());
+        sleep(250);
+        Actions.runBlocking(teeth.open());
+        telemetry.update();
+        sleep(250);
+        Actions.runBlocking(armSwing.pickup());
+        wrist.offset();
+        //Get Third Block
+        Actions.runBlocking(new SequentialAction(
+                drive.actionBuilder(new Pose2d(-57,-37.5,-45))
+                        .turnTo(Math.toRadians(0))
+                        .build()));
+        Actions.runBlocking(teeth.closed());
+        Actions.runBlocking(armSwing.score2());
+        sleep(500);
+        telemetry.update();
+        // Reach out to the bucket
+        Actions.runBlocking(new SequentialAction(
+                reach.out(),
+
+                drive.actionBuilder(new Pose2d(-56, -60, 0))
+                        .turn(Math.toRadians(-45))
+                        .build(),
+
+                armSwing.score2()
+        ));
+        sleep(250);
+        Actions.runBlocking(wrist.back());
+        sleep(250);
+        Actions.runBlocking(teeth.open());
+        telemetry.update();
+        sleep(250);
+        Actions.runBlocking(armSwing.pickup());
+        wrist.offset();
+        //Get Fourth Block
+        Actions.runBlocking(new SequentialAction(
+                drive.actionBuilder(new Pose2d(-48,-28.5,Math.toRadians(90)))
+                        .strafeTo(new Vector2d(-59,-28.5))
+                        .build()));
+        Actions.runBlocking(teeth.closed());
+        Actions.runBlocking(armSwing.score2());
+        sleep(500);
+        telemetry.update();
+        // Reach out to the bucket
+        Actions.runBlocking(new SequentialAction(
+                reach.out(),
+
+                drive.actionBuilder(new Pose2d(-56, -60, 0))
+                        .turn(Math.toRadians(-45))
+                        .build(),
+
+                armSwing.score2()
+        ));
+        sleep(250);
+        Actions.runBlocking(wrist.back());
+        sleep(250);
+        Actions.runBlocking(teeth.open());
+        telemetry.update();
+        sleep(250);
         /*
         // Let go of the first block
         sleep(1000);
         Actions.runBlocking(teeth.open());
         sleep(500);
-        Actions.runBlocking(armSwing.score1());
+        Actions.runBlocking(armSwing.score2());
         sleep(250);
         Actions.runBlocking(new SequentialAction(
                 reach.inn(),
@@ -129,7 +212,7 @@ public class AutoYellow extends LinearOpMode {
         Actions.runBlocking(teeth.closed());
         sleep(500);
         telemetry.update();
-        Actions.runBlocking(armSwing.score1());
+        Actions.runBlocking(armSwing.score2());
         sleep(500);
         telemetry.update();
 
@@ -151,7 +234,7 @@ public class AutoYellow extends LinearOpMode {
         sleep(1000);
         Actions.runBlocking(teeth.open());
         sleep(500);
-        Actions.runBlocking(armSwing.score1());
+        Actions.runBlocking(armSwing.score2());
         sleep(250);
 
         //Pull back & go to 2nd block
@@ -178,7 +261,7 @@ public class AutoYellow extends LinearOpMode {
         sleep(500);
         Actions.runBlocking(teeth.closed());
         sleep(500);
-        Actions.runBlocking(armSwing.score1());
+        Actions.runBlocking(armSwing.score2());
         sleep(500);
 
         //Score the 2nd block
@@ -198,7 +281,7 @@ public class AutoYellow extends LinearOpMode {
         sleep(500);
         Actions.runBlocking(teeth.open());
         sleep(500);
-        Actions.runBlocking(armSwing.score1());
+        Actions.runBlocking(armSwing.score2());
         //Go to 3rd block
         sleep(250);
         Actions.runBlocking(new SequentialAction(
@@ -231,7 +314,7 @@ public class AutoYellow extends LinearOpMode {
         sleep(200);
         Actions.runBlocking(new SequentialAction(
                 spin.straight(),
-                armSwing.score1()
+                armSwing.score2()
         ));
 
 
@@ -253,7 +336,7 @@ public class AutoYellow extends LinearOpMode {
         sleep(500);
         Actions.runBlocking(teeth.open());
         sleep(500);
-        Actions.runBlocking(armSwing.score1());
+        Actions.runBlocking(armSwing.score2());
         sleep(250);
         //End auto, and reset robot for later Teleop usage.
         Actions.runBlocking(new SequentialAction(
