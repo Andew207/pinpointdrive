@@ -22,7 +22,7 @@ class ArmSwing(hardwareMap: HardwareMap) {
         CornerPickup(250),
         Neutral(400),
         Wall(665),
-        PickUp(90),
+        PickUp(200),
         Init(-150)
 
     }

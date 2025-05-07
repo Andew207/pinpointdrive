@@ -16,7 +16,7 @@ class Reach(hardwareMap: HardwareMap) {
     enum class ReachState(val position: Int) {
         Inn(0),
         Middle(1030),
-        Out(2350)
+        Out(1800)
     }
 
     var reachState = ReachState.Inn
