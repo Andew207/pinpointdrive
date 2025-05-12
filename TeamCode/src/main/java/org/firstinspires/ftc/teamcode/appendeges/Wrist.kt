@@ -16,8 +16,10 @@ class Wrist(hardwareMap: HardwareMap) {
      */
     enum class WristPos(val position: Double) {
         Offset(0.9),
+        AutoL4thblock(0.7), //TODO: Test
         Straight(0.6),
-        Back(0.4)
+        Back(0.4),
+        Score(0.2)
     }
 
 
@@ -66,5 +68,7 @@ class Wrist(hardwareMap: HardwareMap) {
     fun offset(): Action = SetState(WristPos.Offset)
     fun straight(): Action = SetState(WristPos.Straight)
     fun back(): Action = SetState(WristPos.Back)
+    fun score(): Action = SetState(WristPos.Score)
+    fun block4(): Action = SetState(WristPos.AutoL4thblock)
 
 }

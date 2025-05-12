@@ -215,8 +215,8 @@ public class KyptenWillCarry extends LinearOpMode {
                     armSwingPosition = -30;
                 }
             }
-            if (armSwingPosition < -2300){
-                armSwingPosition = -2280;
+            if (armSwingPosition < -2350){
+                armSwingPosition = -2330;
             }
 
             if (gamepad2.right_bumper)hands = 0.8;
@@ -225,32 +225,32 @@ public class KyptenWillCarry extends LinearOpMode {
 
             if(gamepad1.b) {
 
-                    armSwingPosition = -2300;
+                    armSwingPosition = -2350;
                     inOutPosition = 1800;
+                    backarm = false;
 
             }
 
-            if(gamepad1.dpad_left && !changed4 && !backarm){
+            if(gamepad1.dpad_left && !changed4){
 
                 if(wrist.getPosition() == 0.9) {
                     wrist.setPosition(0.6);
                     changed4 = true;
+                    backarm = false;
                 }
                 else{
                     wrist.setPosition(0.9);
                     changed4 = true;
+                    backarm = true;
                 }
             }
 
             else if(!gamepad1.dpad_left)
                 changed4 = false;
 
-            if (armSwingPosition < -2200){
-                backarm = true;
+            if (armSwingPosition < -2200 && !backarm){
                 wrist.setPosition(0.3);
             }
-            else
-                backarm = false;
 
             if(gamepad1.dpad_down)armSwingPosition = -650;
             if(gamepad1.dpad_up){
@@ -270,10 +270,6 @@ public class KyptenWillCarry extends LinearOpMode {
                 armPower = 1;
             }
 
-            armSwing.setTargetPosition(armSwingPosition);
-
-            inOutRight.setTargetPosition(inOutPosition);
-            inOutLeft.setTargetPosition(inOutPosition);
 
             armSwing.setPower(armPower);
 
@@ -282,6 +278,12 @@ public class KyptenWillCarry extends LinearOpMode {
 
             handsUpL.setPosition(hands);
             handsUpR.setPosition(hands);
+
+            armSwing.setTargetPosition(armSwingPosition);
+
+            inOutRight.setTargetPosition(inOutPosition);
+            inOutLeft.setTargetPosition(inOutPosition);
+
 
             armSwing.setMode(DcMotor.RunMode.RUN_TO_POSITION);
             inOutRight.setMode(DcMotor.RunMode.RUN_TO_POSITION);

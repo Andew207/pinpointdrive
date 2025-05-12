@@ -88,13 +88,14 @@ public class AutoYellow extends LinearOpMode {
                 armSwing.score2()
         ));
         sleep(250);
-        Actions.runBlocking(wrist.back());
+        Actions.runBlocking(wrist.score());
 
         telemetry.update();
 
         sleep(750);
         Actions.runBlocking(teeth.open());
         sleep(125);
+        Actions.runBlocking(wrist.back());
         Actions.runBlocking(armSwing.neutral());
         sleep(125);
         Actions.runBlocking(reach.inn());
@@ -102,7 +103,7 @@ public class AutoYellow extends LinearOpMode {
         Actions.runBlocking(wrist.offset());
         //Get Second Block//////////////////////////////////////////////////////////////////////////
         Actions.runBlocking(new SequentialAction(
-                drive.actionBuilder(new Pose2d(-47,-37,-1))
+                drive.actionBuilder(new Pose2d(-46.5,-38.5,-1))
                         .waitSeconds(0.001)
                         .turnTo(0)
                         .build()
@@ -116,28 +117,32 @@ public class AutoYellow extends LinearOpMode {
         Actions.runBlocking(new SequentialAction(
                 armSwing.score2(),
                 reach.out(),
-                drive.actionBuilder(new Pose2d(-56, -60, 0))
-                        .turn(Math.toRadians(-45))
+                drive.actionBuilder(new Pose2d(-54, -58, 0))
+                        .turnTo(Math.toRadians(-45))
                         .build(),
                 armSwing.score2()
                 ));
         sleep(250);
-        Actions.runBlocking(wrist.back());
-        sleep(250);
+        Actions.runBlocking(wrist.score());
+        sleep(750);
         Actions.runBlocking(teeth.open());
+        sleep(250);
+        Actions.runBlocking(wrist.back());
         telemetry.update();
         sleep(250);
         Actions.runBlocking(armSwing.neutral());
         sleep(125);
         Actions.runBlocking(reach.inn());
-        wrist.offset();
+        Actions.runBlocking(wrist.offset());
         //Get Third Block///////////////////////////////////////////////////////////////////////////
         Actions.runBlocking(new SequentialAction(
-                drive.actionBuilder(new Pose2d(-59,-37,0))
-                        .waitSeconds(1)
-
+                drive.actionBuilder(new Pose2d(-57,-38.5,-45))
+                        .turnTo(0)
                         .build()));
+        Actions.runBlocking(armSwing.pickup());
+        sleep(250);
         Actions.runBlocking(teeth.closed());
+        sleep(250);
         Actions.runBlocking(armSwing.score2());
         sleep(500);
         telemetry.update();
@@ -145,27 +150,40 @@ public class AutoYellow extends LinearOpMode {
         Actions.runBlocking(new SequentialAction(
                 reach.out(),
 
-                drive.actionBuilder(new Pose2d(-56, -60, 0))
-                        .turn(Math.toRadians(-45))
+                drive.actionBuilder(new Pose2d(-56, -56, 0))
+                        .turnTo(Math.toRadians(-45))
                         .build(),
 
                 armSwing.score2()
         ));
         sleep(250);
-        Actions.runBlocking(wrist.back());
-        sleep(250);
-        Actions.runBlocking(armSwing.score2());
-        sleep(250);
+        Actions.runBlocking(wrist.score());
+        sleep(750);
         Actions.runBlocking(teeth.open());
+        sleep(250);
+        Actions.runBlocking(wrist.back());
         telemetry.update();
         sleep(250);
-        Actions.runBlocking(armSwing.pickup());
-        wrist.offset();
+        Actions.runBlocking(armSwing.neutral());
+        sleep(125);
+        Actions.runBlocking(reach.inn());
+        Actions.runBlocking(wrist.offset());
         //Get Fourth Block//////////////////////////////////////////////////////////////////////////
         Actions.runBlocking(new SequentialAction(
-                drive.actionBuilder(new Pose2d(-48,-28.5,Math.toRadians(90)))
-                        .strafeTo(new Vector2d(-59,-28.5))
-                        .build()));
+                drive.actionBuilder(new Pose2d(-48,-25,Math.toRadians(-45)))
+                        .turnTo(Math.toRadians(90))
+                        .build(),
+                spin.offset(),
+                wrist.block4(), //TODO: Test
+                armSwing.pickup(),
+                drive.actionBuilder(new Pose2d(-48,-25,Math.toRadians(90)))
+                        .strafeTo(new Vector2d(-57,-25))
+                        .build(),
+                drive.actionBuilder(new Pose2d(-50,-25,Math.toRadians(90)))
+                        .turnTo(0)
+                        .build()
+
+        ));
         Actions.runBlocking(teeth.closed());
         Actions.runBlocking(armSwing.score2());
         sleep(500);
@@ -175,7 +193,7 @@ public class AutoYellow extends LinearOpMode {
                 reach.out(),
 
                 drive.actionBuilder(new Pose2d(-56, -60, 0))
-                        .turn(Math.toRadians(-45))
+                        .turnTo(Math.toRadians(-45))
                         .build(),
 
                 armSwing.score2()
@@ -188,10 +206,11 @@ public class AutoYellow extends LinearOpMode {
         sleep(250);
         Actions.runBlocking(new SequentialAction(
                 wrist.offset(),
-                reach.inn(),
                 drive.actionBuilder(new Pose2d(-48,-48,0))
                         .waitSeconds(0.001)
-                        .build()
+                        .build(),
+                reach.inn(),
+                armSwing.neutral()
                 ));
         /*
         // Let go of the first block

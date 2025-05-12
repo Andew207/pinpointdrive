@@ -59,6 +59,7 @@ public class Outreach extends LinearOpMode {
     private DcMotor inOutRight = null;
     private Servo teeth = null;
     private Servo spin = null;
+    private Servo wrist = null;
     private RevTouchSensor limL;
     private RevTouchSensor limR;
 
@@ -104,6 +105,7 @@ T2 -> Slides Out
         inOutRight = hardwareMap.get(DcMotor.class, "inOutRight");
         teeth = hardwareMap.get(Servo.class, "teeth");
         spin = hardwareMap.get(Servo.class, "spin");
+        wrist = hardwareMap.get(Servo.class, "wrist");
         limL = hardwareMap.get(RevTouchSensor.class, "limL");
         limR = hardwareMap.get(RevTouchSensor.class,"limR");
 
@@ -126,6 +128,8 @@ T2 -> Slides Out
 
         spin.setPosition(0.5);
 
+        wrist.setPosition(0);
+
         // Reset encoders
 
         inOutLeft.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
@@ -142,6 +146,8 @@ T2 -> Slides Out
         boolean changed = false;
         boolean changed1 = false;
         boolean changed2 = false;
+        boolean changed4 = false;
+        boolean backarm = false;
 
         double drive;
         double strafe;
@@ -193,6 +199,27 @@ T2 -> Slides Out
                 changed1 = true;
             } else if (!gamepad1.b) changed1 = false;
 
+            if(gamepad1.dpad_left && !changed4){
+
+                if(wrist.getPosition() == 0.9) {
+                    wrist.setPosition(0.6);
+                    changed4 = true;
+                    backarm = false;
+                }
+                else{
+                    wrist.setPosition(0.9);
+                    changed4 = true;
+                    backarm = true;
+                }
+            }
+
+            else if(!gamepad1.dpad_left)
+                changed4 = false;
+
+            if (armSwingPosition < -2200 && !backarm){
+                wrist.setPosition(0.3);
+            }
+
             if (gamepad1.a && !changed2) {
                 if (teethPos == 1) teethPos = 0;
                 else teethPos = 1;
@@ -221,8 +248,8 @@ T2 -> Slides Out
                     armSwingPosition = -20;
                 }
             }
-            if (armSwingPosition < -1900){
-                armSwingPosition = -1890;
+            if (armSwingPosition < -2350){
+                armSwingPosition = -2330;
             }
 
 
