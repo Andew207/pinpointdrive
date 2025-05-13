@@ -78,12 +78,13 @@ public class Outreach extends LinearOpMode {
      \___/ [LS]  [RS] \___/
 
 LS:
- x -> Turn
+ x -> Strafe
  y -> Drive Forward*
 RS:
- x -> Strafe*
+ x -> Turn*
 A -> Open/Close Claw
 B -> Turn Claw
+X -> Operate Wrist
 B1 -> Lower Arm
 B2 -> Raise Arm
 T1 -> Slides In
@@ -161,16 +162,15 @@ T2 -> Slides Out
         double teethPos = 0;
         int armSwingPosition = 100;
         double bumper = 0;
-        int bumperaccel = 0;
 
 
         while (opModeIsActive()) {
 
 
             // Drive variables
-            drive = -gamepad1.right_stick_x;
+            drive = -gamepad1.left_stick_x;
             strafe = gamepad1.left_stick_y;
-            turn = gamepad1.left_stick_x;
+            turn = gamepad1.right_stick_x;
 
             // Setting the 3 intake servos
 
@@ -199,7 +199,7 @@ T2 -> Slides Out
                 changed1 = true;
             } else if (!gamepad1.b) changed1 = false;
 
-            if(gamepad1.dpad_left && !changed4){
+            if(gamepad1.x && !changed4){
 
                 if(wrist.getPosition() == 0.9) {
                     wrist.setPosition(0.6);
@@ -213,7 +213,7 @@ T2 -> Slides Out
                 }
             }
 
-            else if(!gamepad1.dpad_left)
+            else if(!gamepad1.x)
                 changed4 = false;
 
             if (armSwingPosition < -2200 && !backarm){
@@ -235,14 +235,10 @@ T2 -> Slides Out
 
             if(bumper != 0){
                 if (bumper > 0){
-                    armSwingPosition += 20 + bumperaccel;
-                    // Added acceleration to the bumpers to minimise jiggling
-                    //TODO: Tweak acceleration amount to minimise jiggling
-                    bumperaccel += 1;
+                    armSwingPosition += 20;
                 }
                 else {
-                    armSwingPosition -= 20 - bumperaccel;
-                    bumperaccel -= 1;
+                    armSwingPosition -= 20;
                 }
                 if (armSwingPosition >= 20){
                     armSwingPosition = -20;
@@ -256,12 +252,7 @@ T2 -> Slides Out
 
 
 
-            if(armSwingPosition >= -400){
-                armPower = 0.5;
-            }
-            else{
-                armPower = 1;
-            }
+            armPower = 1;
 
             armSwing.setTargetPosition(armSwingPosition);
 
