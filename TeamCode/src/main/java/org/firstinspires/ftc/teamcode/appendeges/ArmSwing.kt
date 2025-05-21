@@ -13,6 +13,7 @@ class ArmSwing(hardwareMap: HardwareMap) {
      * @param position the position of the scoringArm in that state, -1 means we don't currently
      * know the position of the scoringArm
      */
+
     enum class ArmState(val position: Int) {
         Score1(1900),
         Score2(2350),
@@ -20,7 +21,7 @@ class ArmSwing(hardwareMap: HardwareMap) {
         ThroughBars3(1040),
         ThroughBars1(1030),
         CornerPickup(250),
-        Neutral(400),
+        Neutral(500),
         Wall(665),
         PickUp(200),
         Init(-150)

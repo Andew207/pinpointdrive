@@ -15,8 +15,8 @@ class Wrist(hardwareMap: HardwareMap) {
      * know the position of the scoringArm
      */
     enum class WristPos(val position: Double) {
-        Offset(0.9),
-        AutoL4thblock(0.7), //TODO: Test
+        Offset(0.8),
+        AutoL4thblock(0.9),
         Straight(0.6),
         Back(0.4),
         Score(0.2)
