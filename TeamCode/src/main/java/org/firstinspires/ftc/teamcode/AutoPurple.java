@@ -3,7 +3,6 @@ package org.firstinspires.ftc.teamcode;
 import com.acmerobotics.roadrunner.AccelConstraint;
 import com.acmerobotics.roadrunner.AngularVelConstraint;
 import com.acmerobotics.roadrunner.MinVelConstraint;
-import com.acmerobotics.roadrunner.ParallelAction;
 import com.acmerobotics.roadrunner.Pose2d;
 import com.acmerobotics.roadrunner.ProfileAccelConstraint;
 import com.acmerobotics.roadrunner.SequentialAction;
@@ -13,7 +12,6 @@ import com.acmerobotics.roadrunner.VelConstraint;
 import com.acmerobotics.roadrunner.ftc.Actions;
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
-import com.qualcomm.robotcore.hardware.DcMotor;
 
 import org.firstinspires.ftc.robotcore.external.navigation.DistanceUnit;
 import org.firstinspires.ftc.teamcode.appendeges.ArmSwing;
@@ -26,10 +24,7 @@ import org.firstinspires.ftc.teamcode.drive.PinpointDrive;
 import java.util.Arrays;
 
 @Autonomous
-public class AutoYellow extends LinearOpMode {
-    /*
-    * Left Side Auto
-    */
+public class AutoPurple extends LinearOpMode {
     public void runOpMode() {
         Pose2d beginPose = new Pose2d(-38.5, -64.5, 0);
         Pose2d pose = new Pose2d(0,0,0);
@@ -155,7 +150,7 @@ public class AutoYellow extends LinearOpMode {
         Actions.runBlocking(new SequentialAction(
                 reach.out(),
 
-                drive.actionBuilder(new Pose2d(-56, -56, 0))
+                drive.actionBuilder(new Pose2d(-54, -56, 0))
                         .turnTo(Math.toRadians(-45))
                         .build(),
 
@@ -213,14 +208,12 @@ public class AutoYellow extends LinearOpMode {
         sleep(250);
         Actions.runBlocking(new SequentialAction(
                 wrist.offset(),
+                drive.actionBuilder(new Pose2d(36,-12,Math.toRadians(90)))
+                        .waitSeconds(0.001)
+                        .build(),
                 reach.inn(),
                 armSwing.neutral()
                 ));
-        sleep(500);
-        Actions.runBlocking(
-                drive.actionBuilder(new Pose2d(-40,-40,Math.toRadians(90)))
-                .strafeTo(new Vector2d(-36,-12))
-                .build());
 
         sleep(10000); // So the robot doesn't destroy itself.
 

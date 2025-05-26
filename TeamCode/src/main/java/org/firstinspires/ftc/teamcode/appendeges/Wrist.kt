@@ -18,8 +18,8 @@ class Wrist(hardwareMap: HardwareMap) {
         Offset(0.8),
         AutoL4thblock(0.9),
         Straight(0.6),
-        Back(0.4),
-        Score(0.2)
+        Back(0.3),
+        Score(0.15)
     }
 
 

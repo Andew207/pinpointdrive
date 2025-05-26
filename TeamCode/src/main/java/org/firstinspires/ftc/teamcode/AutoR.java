@@ -26,6 +26,9 @@ import java.util.Arrays;
 
 @Autonomous
 public class AutoR extends LinearOpMode {
+    /*//////////////////////////////////////////////////////////////////////////////////////////////
+                                              OUTDATED
+    //////////////////////////////////////////////////////////////////////////////////////////////*/
     public void runOpMode() {
         Pose2d beginPose = new Pose2d(15, -64, 0);
         Pose2d pose = new Pose2d(0,0,0);

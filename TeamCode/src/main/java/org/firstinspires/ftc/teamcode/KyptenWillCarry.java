@@ -69,6 +69,7 @@ public class KyptenWillCarry extends LinearOpMode {
     private Servo wrist;
 
 
+
     //timer
     private final ElapsedTime timer = new ElapsedTime();
 
@@ -231,13 +232,13 @@ public class KyptenWillCarry extends LinearOpMode {
 
             if(gamepad1.dpad_left && !changed4){
 
-                if(wrist.getPosition() == 0.9) {
+                if(wrist.getPosition() == 0.8) {
                     wrist.setPosition(0.6);
                     changed4 = true;
                     backarm = false;
                 }
                 else{
-                    wrist.setPosition(0.9);
+                    wrist.setPosition(0.8);
                     changed4 = true;
                     backarm = true;
                 }
@@ -329,6 +330,8 @@ public class KyptenWillCarry extends LinearOpMode {
             telemetry.addData("FR Power", frontRightPower);
             telemetry.addData("BL Power", backLeftPower);
             telemetry.addData("BR Power", backRightPower);
+
+
 
 
             //FTC DASHBOARD TELEMETRY
