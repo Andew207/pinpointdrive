@@ -216,8 +216,8 @@ public class KyptenWillCarry extends LinearOpMode {
                     armSwingPosition = -30;
                 }
             }
-            if (armSwingPosition < -2250){
-                armSwingPosition = -2230;
+            if (armSwingPosition < -2350){
+                armSwingPosition = -2330;
             }
 
             if (gamepad2.right_bumper)hands = 0.8;
@@ -225,7 +225,7 @@ public class KyptenWillCarry extends LinearOpMode {
             if (gamepad2.a)hands = 0.2;
 
             if(gamepad1.b) {
-                    armSwingPosition = -2250;
+                    armSwingPosition = -2350;
                     inOutPosition = 1800;
                     backarm = false;
             }
@@ -351,10 +351,9 @@ public class KyptenWillCarry extends LinearOpMode {
             packet.put("Wrist Pos",wrist.getPosition());
             packet.put("Spin",spin.getPosition());
 
+
             FtcDashboard dashboard = FtcDashboard.getInstance();
-
             dashboard.sendTelemetryPacket(packet);
-
 
             telemetry.update();
         }

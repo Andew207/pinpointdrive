@@ -16,10 +16,10 @@ class ArmSwing(hardwareMap: HardwareMap) {
 
     enum class ArmState(val position: Int) {
         Score1(1900),
-        Score2(2350),
+        Score2(2425),
         ThroughBars2(1380),
         ThroughBars3(1040),
-        ThroughBars1(1030),
+        ThroughBars1(950),
         CornerPickup(250),
         Neutral(500),
         Wall(665),

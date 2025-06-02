@@ -26,8 +26,7 @@ import java.util.Arrays;
 @Autonomous
 public class AutoPurple extends LinearOpMode {
     public void runOpMode() {
-        Pose2d beginPose = new Pose2d(-38.5, -64.5, 0);
-        Pose2d pose = new Pose2d(0,0,0);
+        Pose2d beginPose = new Pose2d(9, -64.5, 0);
 
         ArmSwing armSwing = new ArmSwing(hardwareMap);
         Teeth teeth = new Teeth(hardwareMap);
@@ -41,7 +40,7 @@ public class AutoPurple extends LinearOpMode {
         PinpointDrive drive = new PinpointDrive(hardwareMap, beginPose);
 
 
-        armSwing.init();
+        Actions.runBlocking(armSwing.init());
 
 
 
@@ -56,9 +55,9 @@ public class AutoPurple extends LinearOpMode {
         AccelConstraint baseAccelConstraint = new ProfileAccelConstraint(-30.0, 50.0);
 
 
-      /*////////////////////////////////////////////////////////////////////////////////////////////
-      Start of Auto LEFT Start of Auto LEFT Start of Auto LEFT Start of Auto LEFT Start of Auto LEFT
-      ////////////////////////////////////////////////////////////////////////////////////////////*/
+ /*/////////////////////////////////////////////////////////////////////////////////////////////////
+ Start of Auto RIGHT Start of Auto RIGHT Start of Auto RIGHT Start of Auto RIGHT Start of Auto RIGHT
+ /////////////////////////////////////////////////////////////////////////////////////////////////*/
         telemetry.addData("Odometry x", drive.getPose().position.x);
         telemetry.addData("Odometry y", drive.getPose().position.y);
         telemetry.addData("Odo Pos x", drive.pinpoint.getPosition().getX(DistanceUnit.INCH));
@@ -69,151 +68,84 @@ public class AutoPurple extends LinearOpMode {
                 wrist.back()
                 ));
 
-        Actions.runBlocking(armSwing.score2());
+        Actions.runBlocking(armSwing.throughBars1());
         sleep(500);
         telemetry.update();
 
 
-        Actions.runBlocking(new SequentialAction(
-                // Reach out to the bucket
-                reach.out(),
-                drive.actionBuilder(new Pose2d(-51,-55,0))
-                        .build(),
-
-                drive.actionBuilder(new Pose2d(-54.5, -58.5, 0))
-                        .turnTo(Math.toRadians(-45))
-                        .build(),
-
-                armSwing.score2()
-        ));
-        sleep(250);
-        Actions.runBlocking(wrist.score());
-
-        telemetry.update();
-
-        sleep(750);
-        Actions.runBlocking(teeth.open());
-        sleep(125);
-        Actions.runBlocking(wrist.back());
-        Actions.runBlocking(armSwing.neutral());
-        sleep(125);
-        Actions.runBlocking(reach.inn());
-        sleep(250);
-        Actions.runBlocking(wrist.offset());
-        //Get Second Block//////////////////////////////////////////////////////////////////////////
-        Actions.runBlocking(new SequentialAction(
-                drive.actionBuilder(new Pose2d(-46.5,-39,-1))
-                        .waitSeconds(0.001)
-                        .turnTo(0)
-                        .build()
-        ));
-        Actions.runBlocking(armSwing.pickup());
-        sleep(250);
-        Actions.runBlocking(teeth.closed());
-        sleep(500);
-        telemetry.update();
-                // Reach out to the bucket
-        Actions.runBlocking(new SequentialAction(
-                armSwing.score2(),
-                reach.out(),
-                drive.actionBuilder(new Pose2d(-54, -58, 0))
-                        .turnTo(Math.toRadians(-45))
-                        .build(),
-                armSwing.score2()
-                ));
-        sleep(250);
-        Actions.runBlocking(wrist.score());
-        sleep(750);
-        Actions.runBlocking(teeth.open());
-        sleep(250);
-        Actions.runBlocking(wrist.back());
-        telemetry.update();
-        sleep(250);
-        Actions.runBlocking(armSwing.neutral());
-        sleep(125);
-        Actions.runBlocking(reach.inn());
-        Actions.runBlocking(wrist.offset());
-        //Get Third Block///////////////////////////////////////////////////////////////////////////
-        Actions.runBlocking(new SequentialAction(
-                drive.actionBuilder(new Pose2d(-57,-40,-45))
-                        .turnTo(0)
-                        .strafeTo(new Vector2d(-57,-37))
-                        .build()));
-        Actions.runBlocking(armSwing.pickup());
-        sleep(250);
-        Actions.runBlocking(teeth.closed());
-        sleep(250);
-        Actions.runBlocking(armSwing.score2());
-        sleep(500);
-        telemetry.update();
-        // Reach out to the bucket
-        Actions.runBlocking(new SequentialAction(
-                reach.out(),
-
-                drive.actionBuilder(new Pose2d(-54, -56, 0))
-                        .turnTo(Math.toRadians(-45))
-                        .build(),
-
-                armSwing.score2()
-        ));
-        sleep(250);
-        Actions.runBlocking(wrist.score());
-        sleep(750);
-        Actions.runBlocking(teeth.open());
-        sleep(250);
-        Actions.runBlocking(wrist.back());
-        telemetry.update();
-        sleep(250);
-        Actions.runBlocking(armSwing.neutral());
-        sleep(125);
-        Actions.runBlocking(reach.inn());
-        Actions.runBlocking(wrist.offset());
-        //Get Fourth Block//////////////////////////////////////////////////////////////////////////
-        Actions.runBlocking(new SequentialAction(
-                drive.actionBuilder(new Pose2d(-48,-27,Math.toRadians(-45)))
-                        .turnTo(Math.toRadians(90))
-                        .build(),
-                spin.offset(),
-                drive.actionBuilder(new Pose2d(-48,-27,Math.toRadians(90)))
-                        .strafeTo(new Vector2d(-57.25,-27))
-                        .build(),
-                armSwing.pickup()));
-        sleep(250);
-        Actions.runBlocking(teeth.closed());
-        sleep(250);
-        Actions.runBlocking(armSwing.neutral());
         Actions.runBlocking(
-                drive.actionBuilder(new Pose2d(-50,-27,Math.toRadians(90)))
-                        .turnTo(0)
+                // Reach out to the top bar
+                drive.actionBuilder(beginPose)
+                        .strafeTo(new Vector2d(9,-36))
                         .build()
         );
-        Actions.runBlocking(armSwing.score2());
-        sleep(500);
-        telemetry.update();
-        // Reach out to the bucket
+        sleep(250);
+        Actions.runBlocking(teeth.open());
+        Actions.runBlocking(
+                drive.actionBuilder(new Pose2d(9,-36,0))
+                        .strafeTo(new Vector2d(9,-50))
+                        .waitSeconds(0.25)
+                        .build()
+        );
+        //Go to push blocks into observation zone
+        sleep(250);
+        Actions.runBlocking(
+                drive.actionBuilder(new Pose2d(36,-50,0))
+                        .waitSeconds(0.25)
+                        .strafeTo(new Vector2d(36,-24))
+                        .build()
+        );
+        sleep(250);
+        Actions.runBlocking(
+                drive.actionBuilder(new Pose2d(46,-24,0))
+                        .strafeTo(new Vector2d(46,-60))
+                        .build()
+        );
+        sleep(250);
+        Actions.runBlocking(
+                drive.actionBuilder(new Pose2d(46,-24,0))
+                        .waitSeconds(0.1)
+                        .strafeTo(new Vector2d(56,-24))
+                        .build()
+        );
+        sleep(250);
+        Actions.runBlocking(
+                drive.actionBuilder(new Pose2d(56,-24,0))
+                        .strafeTo(new Vector2d(56,-60))
+                        .waitSeconds(0.1)
+                        .strafeTo(new Vector2d(56,-24))
+                        .build()
+        );
+        sleep(250);
+        Actions.runBlocking(
+                drive.actionBuilder(new Pose2d(60,-24,0))
+                        .strafeTo(new Vector2d(60,-60))
+                        .waitSeconds(0.1)
+                        .strafeTo(new Vector2d(48,-24))
+                        .waitSeconds(0.1)
+                        .build()
+        );
+        //grab clipped blocks
         Actions.runBlocking(new SequentialAction(
-                reach.out(),
-
-                drive.actionBuilder(new Pose2d(-54, -56, 0))
-                        .turnTo(Math.toRadians(-55))
+                //block #1
+                drive.actionBuilder(new Pose2d(48,-60,Math.toRadians(180)))
+                        .waitSeconds(0.1)
                         .build(),
-
-                armSwing.score2()
+                teeth.open(),
+                armSwing.pickup()
         ));
         sleep(250);
-        Actions.runBlocking(wrist.back());
-        sleep(500);
-        Actions.runBlocking(teeth.open());
-        telemetry.update();
-        sleep(250);
         Actions.runBlocking(new SequentialAction(
-                wrist.offset(),
-                drive.actionBuilder(new Pose2d(36,-12,Math.toRadians(90)))
-                        .waitSeconds(0.001)
+                //put on top bar
+                teeth.closed(),
+                drive.actionBuilder(new Pose2d(48,-60,Math.toRadians(180)))
+                        .waitSeconds(0.1)
+                        .turnTo(0)
+                        .strafeTo(new Vector2d(0,-36))
                         .build(),
-                reach.inn(),
-                armSwing.neutral()
-                ));
+                armSwing.throughBars1()
+        ));
+
 
         sleep(10000); // So the robot doesn't destroy itself.
 

@@ -217,10 +217,14 @@ public class AutoYellow extends LinearOpMode {
                 armSwing.neutral()
                 ));
         sleep(500);
-        Actions.runBlocking(
-                drive.actionBuilder(new Pose2d(-40,-40,Math.toRadians(90)))
-                .strafeTo(new Vector2d(-36,-12))
-                .build());
+        Actions.runBlocking(new SequentialAction(
+                drive.actionBuilder(new Pose2d(-50,-40,Math.toRadians(90)))
+                .strafeTo(new Vector2d(-40,-12))
+                .build(),
+                wrist.score(),
+                reach.inn(),
+                armSwing.pickup()
+        ));
 
         sleep(10000); // So the robot doesn't destroy itself.
 
