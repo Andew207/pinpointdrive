@@ -116,7 +116,7 @@ public class KyptenWillCarry extends LinearOpMode {
         waitForStart();
         runtime.reset();
 
-        spin.setPosition(0.5);
+        spin.setPosition(0);
 
         // Reset encoders
 
@@ -199,12 +199,12 @@ public class KyptenWillCarry extends LinearOpMode {
                 changed2 = true;
             } else if(!gamepad1.a) changed2 = false;
 
-            if(gamepad1.left_bumper)
-                bumper = 1;
-            else if(gamepad1.right_bumper)
-                bumper = -1;
-            else
-                bumper = 0;
+            if(gamepad1.left_bumper){
+                bumper = 1;}
+            else if(gamepad1.right_bumper){
+                bumper = -1;}
+            else{
+                bumper = 0;}
 
             if(bumper != 0){
                 if (bumper > 0){
@@ -251,7 +251,15 @@ public class KyptenWillCarry extends LinearOpMode {
                 wrist.setPosition(0.3);
             }
 
-            if(gamepad1.dpad_down)armSwingPosition = -650;
+            if(gamepad1.dpad_down){
+                armSwingPosition = -600;
+                wrist.setPosition(0.4);
+            }
+            if(gamepad1.dpad_right){
+                armSwingPosition = -1620;
+                wrist.setPosition(0.4);
+            }
+
             if(gamepad1.dpad_up){
                 changed3 = true;
                 frontLeftDrive.setPower(-0.2);
