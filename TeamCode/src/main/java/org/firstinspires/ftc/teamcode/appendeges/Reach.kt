@@ -15,6 +15,7 @@ class Reach(hardwareMap: HardwareMap) {
      */
     enum class ReachState(val position: Int) {
         Inn(0),
+        Little(500),
         Middle(1030),
         Out(1800)
     }
@@ -84,6 +85,7 @@ class Reach(hardwareMap: HardwareMap) {
      */
 
     fun inn(): Action = SetState(ReachState.Inn)
+    fun a_little(): Action = SetState(ReachState.Little)
     fun middle(): Action = SetState(ReachState.Middle)
     fun out(): Action = SetState(ReachState.Out)
 

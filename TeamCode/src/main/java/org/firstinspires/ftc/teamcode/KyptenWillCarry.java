@@ -252,11 +252,13 @@ public class KyptenWillCarry extends LinearOpMode {
             }
 
             if(gamepad1.dpad_down){
+                inOutPosition = 0;
                 armSwingPosition = -600;
                 wrist.setPosition(0.4);
             }
             if(gamepad1.dpad_right){
-                armSwingPosition = -1620;
+                inOutPosition = 0;
+                armSwingPosition = -1200;
                 wrist.setPosition(0.4);
             }
 
@@ -332,7 +334,7 @@ public class KyptenWillCarry extends LinearOpMode {
             telemetry.addData("BR Encoder", backRightDrive.getCurrentPosition());
             telemetry.addData("Arm Target Pos", armSwing.getTargetPosition());
             telemetry.addData("Arm Swing", armSwing.getCurrentPosition());
-
+            telemetry.addData("Wrist Pos", wrist.getPosition());
 
             telemetry.addData("FL Power", frontLeftPower);
             telemetry.addData("FR Power", frontRightPower);

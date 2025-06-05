@@ -19,7 +19,9 @@ class Wrist(hardwareMap: HardwareMap) {
         AutoL4thblock(0.9),
         Straight(0.6),
         Back(0.3),
-        Score(0.15)
+        Score(0.15),
+        Num1(1.0)
+
     }
 
 
@@ -70,5 +72,6 @@ class Wrist(hardwareMap: HardwareMap) {
     fun back(): Action = SetState(WristPos.Back)
     fun score(): Action = SetState(WristPos.Score)
     fun block4(): Action = SetState(WristPos.AutoL4thblock)
+    fun num1(): Action = SetState(WristPos.Num1)
 
 }
