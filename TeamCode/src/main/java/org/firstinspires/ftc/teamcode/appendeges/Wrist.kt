@@ -18,6 +18,7 @@ class Wrist(hardwareMap: HardwareMap) {
         Offset(0.8),
         AutoL4thblock(0.9),
         Straight(0.6),
+        Sweep(0.4),
         Back(0.3),
         Score(0.15),
         Num1(1.0)
@@ -67,6 +68,7 @@ class Wrist(hardwareMap: HardwareMap) {
      * alongside a collect action
      */
     //TODO: change functions to wrist functions
+    fun sweep(): Action = SetState(WristPos.Sweep)
     fun offset(): Action = SetState(WristPos.Offset)
     fun straight(): Action = SetState(WristPos.Straight)
     fun back(): Action = SetState(WristPos.Back)

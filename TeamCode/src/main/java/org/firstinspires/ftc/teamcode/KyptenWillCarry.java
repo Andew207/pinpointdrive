@@ -253,13 +253,14 @@ public class KyptenWillCarry extends LinearOpMode {
 
             if(gamepad1.dpad_down){
                 inOutPosition = 0;
-                armSwingPosition = -600;
+                armSwingPosition = -570;
                 wrist.setPosition(0.4);
             }
             if(gamepad1.dpad_right){
+                //Specimen scoring: use this, then shove the block against the bar, then go down.
                 inOutPosition = 0;
-                armSwingPosition = -1200;
-                wrist.setPosition(0.4);
+                armSwingPosition = -1340;
+                wrist.setPosition(0.6);
             }
 
             if(gamepad1.dpad_up){
