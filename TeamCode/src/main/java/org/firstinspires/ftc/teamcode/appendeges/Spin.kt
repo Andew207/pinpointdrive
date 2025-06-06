@@ -48,7 +48,7 @@ class Spin(hardwareMap: HardwareMap) {
             }
             spin.position
 
-            //TODO: make this scoringArm.isbusy so that it will actually do smth :)
+
             return false
         }
     }

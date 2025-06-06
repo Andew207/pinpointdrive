@@ -18,8 +18,9 @@ class ArmSwing(hardwareMap: HardwareMap) {
         Score1(1900),
         Score2(2425),
         ThroughBars2(1700),
-        ThroughBars3(1600),
-        ThroughBars1(950),
+        ThroughBars3(1480),
+        ThroughBars1(1480),
+        ThroughBars0(1360),
         CornerPickup(250),
         Neutral(500),
         Wall(665),
@@ -85,6 +86,7 @@ class ArmSwing(hardwareMap: HardwareMap) {
      * alongside a collect action
      */
 
+    fun throughBars0(): Action = SetState(ArmState.ThroughBars0)
     fun throughBars1(): Action = SetState(ArmState.ThroughBars1)
     fun throughBars2(): Action = SetState(ArmState.ThroughBars2)
     fun throughBars3(): Action = SetState(ArmState.ThroughBars3)
