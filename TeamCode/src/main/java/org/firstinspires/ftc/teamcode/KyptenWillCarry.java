@@ -314,10 +314,10 @@ public class KyptenWillCarry extends LinearOpMode {
 
 
             // Drive equations
-            frontLeftPower = Range.clip((drive + strafe - turn) / slow, -1, 1);
-            frontRightPower = Range.clip((drive - strafe - turn) / slow, -1, 1);
-            backLeftPower = Range.clip((drive - strafe + turn) / slow, -1, 1);
-            backRightPower = Range.clip((drive + strafe + turn) / slow, -1, 1);
+            frontLeftPower = Range.clip(((drive + strafe - turn) / slow), -1, 1);
+            frontRightPower = Range.clip(((drive - strafe - turn) / slow), -1, 1);
+            backLeftPower = Range.clip(((drive - strafe + turn) / slow), -1, 1);
+            backRightPower = Range.clip(((drive + strafe + turn) / slow), -1, 1);
 
             if(!changed3) {
                 frontLeftDrive.setPower(frontLeftPower);
