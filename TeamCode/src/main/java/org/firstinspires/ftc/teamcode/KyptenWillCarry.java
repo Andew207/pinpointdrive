@@ -216,8 +216,8 @@ public class KyptenWillCarry extends LinearOpMode {
                     armSwingPosition = -30;
                 }
             }
-            if (armSwingPosition < -2350){
-                armSwingPosition = -2330;
+            if (armSwingPosition < -2450){
+                armSwingPosition = -2430;
             }
 
             if (gamepad2.right_bumper)hands = 0.8;
@@ -225,7 +225,7 @@ public class KyptenWillCarry extends LinearOpMode {
             if (gamepad2.a)hands = 0.2;
 
             if(gamepad1.b) {
-                    armSwingPosition = -2350;
+                    armSwingPosition = -2450;
                     inOutPosition = 1800;
                     backarm = false;
             }
