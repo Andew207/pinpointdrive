@@ -136,6 +136,7 @@ public class KyptenWillCarry extends LinearOpMode {
         boolean changed2 = false;
         boolean changed3 = false;
         boolean changed4 = false;
+        boolean init = false;
 
         double drive;
         double strafe;
@@ -158,21 +159,21 @@ public class KyptenWillCarry extends LinearOpMode {
 
 
             // Drive variables
-            drive = -gamepad1.left_stick_x;
-            strafe = gamepad1.left_stick_y;
-            turn = gamepad1.right_stick_x;
+            drive = -gamepad1.left_stick_x+(-gamepad2.left_stick_x);
+            strafe = gamepad1.left_stick_y+(-gamepad2.left_stick_y);
+            turn = gamepad1.right_stick_x+(-gamepad2.right_stick_x);
 
             // Setting the 3 intake servos
 
             // slow mode! //
-            if (gamepad1.y && !changed) {
+            if ((gamepad1.dpad_left || gamepad2.dpad_left) && !changed) {
                 if (slow == 1) slow = 2;
                 else slow = 1;
                 changed = true;
-            } else if (!gamepad1.y) changed = false;
+            } else if (!(gamepad1.dpad_left || gamepad2.dpad_left)) changed = false;
             // Slides
-            if (gamepad1.left_trigger - gamepad1.right_trigger != 0){
-                if (gamepad1.left_trigger != 0){
+            if ((gamepad1.left_trigger + gamepad2.left_trigger) - (gamepad1.right_trigger + gamepad2.right_trigger) != 0){
+                if ((gamepad1.left_trigger + gamepad2.left_trigger) != 0){
                     inOutPosition = inOutPosition + 80;
                 }
                 else{
@@ -187,21 +188,21 @@ public class KyptenWillCarry extends LinearOpMode {
                 inOutPosition = 2500;
 
 
-            if (gamepad1.x && !changed1) {
+            if ((gamepad1.x || gamepad2.x) && !changed1) {
                 if (spin.getPosition() == 1) spin.setPosition(0);
                 else spin.setPosition(1);
                 changed1 = true;
-            } else if (!gamepad1.x) changed1 = false;
+            } else if (!(gamepad1.x || gamepad2.x)) changed1 = false;
 
-            if (gamepad1.a && !changed2) {
+            if ((gamepad1.a || gamepad2.a) && !changed2) {
                 if (teethPos ==.9) teethPos = 0.35;
                 else teethPos = .9;
                 changed2 = true;
-            } else if(!gamepad1.a) changed2 = false;
+            } else if(!(gamepad1.a || gamepad2.a)) changed2 = false;
 
-            if(gamepad1.left_bumper){
+            if(gamepad1.left_bumper || gamepad2.left_bumper){
                 bumper = 1;}
-            else if(gamepad1.right_bumper){
+            else if(gamepad1.right_bumper || gamepad2.right_bumper){
                 bumper = -1;}
             else{
                 bumper = 0;}
@@ -219,18 +220,30 @@ public class KyptenWillCarry extends LinearOpMode {
             if (armSwingPosition < -2450){
                 armSwingPosition = -2430;
             }
+            if (armSwingPosition > 0){
+                armSwingPosition = -20;
+            }
 
-            if (gamepad2.right_bumper)hands = 0.8;
+            /*if (gamepad2.right_bumper)hands = 0.8;
             if (gamepad2.left_bumper)hands = 0.6;
-            if (gamepad2.a)hands = 0.2;
+            if (gamepad2.a)hands = 0.2;*/
 
             if(gamepad1.b) {
                     armSwingPosition = -2450;
                     inOutPosition = 1800;
                     backarm = false;
             }
+            if (gamepad2.right_stick_button || gamepad1.right_stick_button) {
+                wrist.setPosition(1);
+                armSwingPosition = 150;
+                init = true;
+                armSwing.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+                armSwing.setTargetPosition(150);
+                armSwing.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+            }
 
-            if(gamepad1.dpad_left && !changed4){
+
+            if((gamepad1.y || gamepad2.y) && !changed4){
 
                 if(wrist.getPosition() == 0.8) {
                     wrist.setPosition(0.6);
@@ -244,26 +257,31 @@ public class KyptenWillCarry extends LinearOpMode {
                 }
             }
 
-            else if(!gamepad1.dpad_left)
+            else if(!(gamepad1.y || gamepad2.y))
                 changed4 = false;
 
             if (armSwingPosition < -2200 && !backarm){
                 wrist.setPosition(0.3);
             }
 
-            if(gamepad1.dpad_down){
+            if(gamepad2.dpad_down){
                 inOutPosition = 0;
-                armSwingPosition = -570;
+                armSwingPosition = -500;
                 wrist.setPosition(0.4);
             }
-            if(gamepad1.dpad_right){
+            if(gamepad1.dpad_down){
+                inOutPosition = 0;
+                armSwingPosition = -400;
+                wrist.setPosition(0.6);
+            }
+            if(gamepad2.dpad_right){
                 //Specimen scoring: use this, then shove the block against the bar, then go down.
                 inOutPosition = 0;
                 armSwingPosition = -1340;
                 wrist.setPosition(0.6);
             }
 
-            if(gamepad1.dpad_up){
+                if(gamepad1.dpad_up || gamepad2.dpad_up){
                 changed3 = true;
                 frontLeftDrive.setPower(-0.2);
                 frontRightDrive.setPower(0.2);
