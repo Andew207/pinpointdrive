@@ -253,7 +253,7 @@ public class KyptenWillCarry extends LinearOpMode {
 
             if(gamepad1.dpad_down){
                 inOutPosition = 0;
-                armSwingPosition = -570;
+                armSwingPosition = -550;
                 wrist.setPosition(0.4);
             }
             if(gamepad1.dpad_right){

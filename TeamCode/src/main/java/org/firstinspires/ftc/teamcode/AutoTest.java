@@ -44,7 +44,7 @@ public class AutoTest extends LinearOpMode {
         PinpointDrive drive = new PinpointDrive(hardwareMap, beginPose);
 
 
-        armSwing.init();
+
 
 
 
@@ -66,61 +66,14 @@ public class AutoTest extends LinearOpMode {
         telemetry.addData("Odometry y", drive.getPose().position.y);
         telemetry.addData("Odo Pos x", drive.pinpoint.getPosition().getX(DistanceUnit.INCH));
         telemetry.addData("Odo Pos y", drive.pinpoint.getPosition().getY(DistanceUnit.INCH));
-        Actions.runBlocking(new SequentialAction(
-                wrist.num1(),
-                teeth.closed()
-        ));
+        /*for(int i = 0; i<10000;i++){
+            telemetry.update();
+            sleep(10);
+        }*/
+        Actions.runBlocking(spin.straight());
+        sleep(1000);
+        Actions.runBlocking(spin.offset());
 
-        Actions.runBlocking(armSwing.throughBars2());
-        sleep(100);
-        telemetry.update();
-
-
-        Actions.runBlocking(new SequentialAction(
-                // Reach out to the top bar
-                drive.actionBuilder(beginPose)
-                        .strafeTo(new Vector2d(9,-38))
-                        .waitSeconds(0.5)
-                        .build(),
-                armSwing.throughBars3()//,
-                //drive.actionBuilder(new Pose2d(9,-39,0))
-                //      .strafeTo(new Vector2d(9,-41))
-                //    .build()
-
-                //reach.middle()
-
-        ));
-        sleep(400);
-        Actions.runBlocking(reach.inn());
-        Actions.runBlocking(new SequentialAction(
-                armSwing.pickup(),
-                teeth.open(),
-                wrist.sweep(),
-                drive.actionBuilder(new Pose2d(9,-36,0))
-                        .strafeTo(new Vector2d(9,-50))
-                        .waitSeconds(0.2)
-                        .build()
-        ));
-        //Go to push blocks into observation zone
-
-        Actions.runBlocking(new SequentialAction(
-                drive.actionBuilder(new Pose2d(9,-50,Math.toRadians(270)))
-                        .strafeTo(new Vector2d(24,-50))
-                        .waitSeconds(0.1)
-                        .strafeTo(new Vector2d(24,-36))
-                        .turnTo(315)
-                        .build(),
-                armSwing.neutral()
-        ));
-        sleep(100);
-        Actions.runBlocking(new SequentialAction(
-                //Block #1
-                reach.out(),
-                drive.actionBuilder(new Pose2d(24,-36,Math.toRadians(315)))
-                        .turnTo(225)
-                        .strafeTo(new Vector2d(-24,-48))
-                        .build()
-        ));
         sleep(10*1000);
     }
 }

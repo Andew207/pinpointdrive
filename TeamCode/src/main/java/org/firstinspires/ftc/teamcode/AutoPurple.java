@@ -71,6 +71,7 @@ public class AutoPurple extends LinearOpMode {
 
         Actions.runBlocking(new ParallelAction(
                 armSwing.throughBars2(),
+                spin.offset(),
                 teeth.closed()));
         sleep(200);
         Actions.runBlocking(wrist.num1());
@@ -114,9 +115,9 @@ public class AutoPurple extends LinearOpMode {
                 armSwing.neutral(),
                 wrist.offset()),
                 drive.actionBuilder(new Pose2d(9,-50,Math.toRadians(90)))
-                        .strafeTo(new Vector2d(36,-50))
+                        .strafeTo(new Vector2d(38,-50))
                         .waitSeconds(0.1)
-                        .strafeTo(new Vector2d(36,-16))
+                        .strafeTo(new Vector2d(38,-16))
                         .build()
         ));
         sleep(100);
@@ -152,12 +153,12 @@ public class AutoPurple extends LinearOpMode {
         Actions.runBlocking(new SequentialAction(
                 new ParallelAction(
                 armSwing.wall(),
-                wrist.straight(),
+                wrist.sweep(),
                 teeth.open()),
                 drive.actionBuilder(new Pose2d(48,-40,Math.toRadians(270)))
-                        .waitSeconds(0.25)
                         //go out so that the person can grab blocks
-                        .turnTo(Math.toRadians(180))
+                        .waitSeconds(0.25)
+                        .turn(Math.toRadians(-90))
                         .strafeTo(new Vector2d(48,-55))
                         .build()
         ));
@@ -165,20 +166,18 @@ public class AutoPurple extends LinearOpMode {
         Actions.runBlocking(new SequentialAction(
                 //block #1 to bar
                 new ParallelAction(
-                armSwing.wall(),
+                armSwing.wall2(),
                 spin.offset(),
-                wrist.straight()),
-                drive.actionBuilder(new Pose2d(48,-53.5,Math.toRadians(180)))
+                drive.actionBuilder(new Pose2d(46,-53.5,Math.toRadians(180)))
                         .waitSeconds(0.1)
                         .build(),
-                wrist.straight(),
                 teeth.closed()
-        ));
+        )));
         sleep(200);
         Actions.runBlocking(new SequentialAction(
                 //put on top bar
                 teeth.closed(),
-                armSwing.throughBars1(),
+                armSwing.throughBars4(),
                 drive.actionBuilder(new Pose2d(48,-53.5,Math.toRadians(180)))
                         .waitSeconds(0.1)
                         .turnTo(0)
@@ -191,7 +190,7 @@ public class AutoPurple extends LinearOpMode {
                         .strafeTo(new Vector2d(2,-37))
                         .waitSeconds(0.1)
                         .build(),
-                armSwing.throughBars0(),
+                armSwing.throughBars5(),
                 drive.actionBuilder(new Pose2d(2,-37,0))
                         .strafeTo(new Vector2d(2,-46))
                         .build(),
@@ -200,11 +199,11 @@ public class AutoPurple extends LinearOpMode {
         sleep(100);
         Actions.runBlocking(new SequentialAction(
                 //block #2 to bar
-                armSwing.wall(),
+                armSwing.wall2(),
                 drive.actionBuilder(new Pose2d(48,-53.5,Math.toRadians(0)))
                         .turnTo(Math.toRadians(180))
                         .build(),
-                wrist.straight(),
+                wrist.sweep(),
                 teeth.open()
         ));
         sleep(250);
