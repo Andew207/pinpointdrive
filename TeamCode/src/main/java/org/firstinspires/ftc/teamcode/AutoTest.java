@@ -3,9 +3,11 @@ package org.firstinspires.ftc.teamcode;
 import com.acmerobotics.roadrunner.AccelConstraint;
 import com.acmerobotics.roadrunner.AngularVelConstraint;
 import com.acmerobotics.roadrunner.MinVelConstraint;
+import com.acmerobotics.roadrunner.ParallelAction;
 import com.acmerobotics.roadrunner.Pose2d;
 import com.acmerobotics.roadrunner.ProfileAccelConstraint;
 import com.acmerobotics.roadrunner.SequentialAction;
+import com.acmerobotics.roadrunner.SleepAction;
 import com.acmerobotics.roadrunner.TranslationalVelConstraint;
 import com.acmerobotics.roadrunner.Vector2d;
 import com.acmerobotics.roadrunner.VelConstraint;
@@ -20,17 +22,17 @@ import org.firstinspires.ftc.teamcode.appendeges.Spin;
 import org.firstinspires.ftc.teamcode.appendeges.Teeth;
 import org.firstinspires.ftc.teamcode.appendeges.Wrist;
 import org.firstinspires.ftc.teamcode.drive.PinpointDrive;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.util.Arrays;
 
 @Autonomous
 public class AutoTest extends LinearOpMode {
-    /*
-     * Left Side Auto
-     */
+    private static final Logger log = LoggerFactory.getLogger(AutoTest.class);
+
     public void runOpMode() {
         Pose2d beginPose = new Pose2d(9, -64.5, 0);
-        Pose2d pose = new Pose2d(0,0,0);
 
         ArmSwing armSwing = new ArmSwing(hardwareMap);
         Teeth teeth = new Teeth(hardwareMap);
@@ -44,7 +46,7 @@ public class AutoTest extends LinearOpMode {
         PinpointDrive drive = new PinpointDrive(hardwareMap, beginPose);
 
 
-
+        Actions.runBlocking(new ParallelAction(armSwing.init(),spin.straight()));
 
 
 
@@ -66,14 +68,25 @@ public class AutoTest extends LinearOpMode {
         telemetry.addData("Odometry y", drive.getPose().position.y);
         telemetry.addData("Odo Pos x", drive.pinpoint.getPosition().getX(DistanceUnit.INCH));
         telemetry.addData("Odo Pos y", drive.pinpoint.getPosition().getY(DistanceUnit.INCH));
-        /*for(int i = 0; i<10000;i++){
-            telemetry.update();
-            sleep(10);
-        }*/
-        Actions.runBlocking(spin.straight());
-        sleep(1000);
-        Actions.runBlocking(spin.offset());
 
-        sleep(10*1000);
+        Actions.runBlocking(new ParallelAction(
+                teeth.closed(),
+                armSwing.vertBar0(),
+                wrist.back(),
+                spin.straight(),
+                drive.actionBuilder(beginPose)
+                        .strafeTo(new Vector2d(0,-38))
+                        .build()
+        ));
+        sleep(250);
+        Actions.runBlocking(new SequentialAction(
+                armSwing.vertBar1(),
+                drive.actionBuilder(new Pose2d(0,-38,0))
+                        .waitSeconds(1)
+                        .build(),
+                teeth.open()
+        ));
+
+        sleep(10*(86400000));//sleep for 10 * 1 day
     }
 }

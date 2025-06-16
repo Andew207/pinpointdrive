@@ -25,6 +25,9 @@ class ArmSwing(hardwareMap: HardwareMap) {
         ThroughBars5(1120),
         CornerPickup(250),
         Neutral(500),
+        VerticalBar0(1100),
+        VerticalBar1(850),
+        VertPickup0(300),
         Wall(665),
         Wall2(620),
         PickUp(200),
@@ -89,6 +92,10 @@ class ArmSwing(hardwareMap: HardwareMap) {
      * alongside a collect action
      */
 
+
+    fun vertBar0(): Action = SetState(ArmState.VerticalBar0)
+    fun vertBar1(): Action = SetState(ArmState.VerticalBar1)
+    fun vertPickup0(): Action = SetState(ArmState.VertPickup0)
     fun throughBars5(): Action = SetState(ArmState.ThroughBars5)
     fun throughBars4(): Action = SetState(ArmState.ThroughBars4)
     fun throughBars0(): Action = SetState(ArmState.ThroughBars0)

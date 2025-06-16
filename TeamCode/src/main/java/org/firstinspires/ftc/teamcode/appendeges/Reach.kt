@@ -17,7 +17,7 @@ class Reach(hardwareMap: HardwareMap) {
         Inn(0),
         Little(500),
         Middle(1030),
-        Out(1800)
+        Out(1875)
     }
 
     var reachState = ReachState.Inn

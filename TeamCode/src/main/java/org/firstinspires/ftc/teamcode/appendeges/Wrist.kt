@@ -19,9 +19,12 @@ class Wrist(hardwareMap: HardwareMap) {
         AutoL4thblock(0.9),
         Straight(0.6),
         Sweep(0.4),
+        VertGrab(0.35),
         Back(0.3),
         Score(0.15),
-        Num1(1.0)
+        ZeroPointOne(0.1),
+        Num1(1.0),
+        Num0(0.0)
 
     }
 
@@ -68,12 +71,15 @@ class Wrist(hardwareMap: HardwareMap) {
      * alongside a collect action
      */
     //TODO: change functions to wrist functions
+    fun zero1(): Action = SetState(WristPos.ZeroPointOne)
     fun sweep(): Action = SetState(WristPos.Sweep)
+    fun vertGrb(): Action = SetState(WristPos.VertGrab)
     fun offset(): Action = SetState(WristPos.Offset)
     fun straight(): Action = SetState(WristPos.Straight)
     fun back(): Action = SetState(WristPos.Back)
     fun score(): Action = SetState(WristPos.Score)
     fun block4(): Action = SetState(WristPos.AutoL4thblock)
     fun num1(): Action = SetState(WristPos.Num1)
+    fun num0(): Action = SetState(WristPos.Num0)
 
 }
