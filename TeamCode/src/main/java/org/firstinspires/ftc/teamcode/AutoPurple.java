@@ -58,6 +58,10 @@ public class AutoPurple extends LinearOpMode {
                 new TranslationalVelConstraint(100.0),
                 new AngularVelConstraint(Math.PI / 2)
         ));
+        VelConstraint velconst = new MinVelConstraint(Arrays.asList(
+                new TranslationalVelConstraint(40.0),
+                new AngularVelConstraint(Math.PI / 2)
+        ));
         AccelConstraint baseAccelConstraint = new ProfileAccelConstraint(-30.0, 50.0);
 
 
@@ -83,15 +87,15 @@ public class AutoPurple extends LinearOpMode {
                 // Reach out to the top bar
                 new ParallelAction(
                 drive.actionBuilder(beginPose)
-                        .strafeTo(new Vector2d(9,-38))
+                        .strafeTo(new Vector2d(5,-38), velconst)//minimum speed
                         .build(),
                 armSwing.vertBar0()),
-                drive.actionBuilder(new Pose2d(9,-38,0))
+                drive.actionBuilder(new Pose2d(5,-38,0))
                         .waitSeconds(0.1)
                         .build(),
                 armSwing.vertBar1(),
-                drive.actionBuilder(new Pose2d(9,-38,0))
-                        .strafeTo(new Vector2d(9,-46))
+                drive.actionBuilder(new Pose2d(5,-38,0))
+                        .strafeTo(new Vector2d(5,-46), velconst)//minimum speed
                         .build()
 
                 //reach.middle()
@@ -103,42 +107,37 @@ public class AutoPurple extends LinearOpMode {
                 new ParallelAction(
                 armSwing.neutral(),
                 teeth.open(),
-                wrist.num0()),
-                drive.actionBuilder(new Pose2d(9,-46,0))
-                        .strafeTo(new Vector2d(9,-50))
+                wrist.num0(),
+                drive.actionBuilder(new Pose2d(5,-46,0))
+                        .strafeTo(new Vector2d(5,-50), velconst)//minimum speed
                         .waitSeconds(0.2)
                         .build()
-        ));
+        )));
         //Go to push blocks into observation zone
         Actions.runBlocking(new SequentialAction(
                 new ParallelAction(
                 armSwing.pickup(),
                 wrist.num0()),
-                drive.actionBuilder(new Pose2d(9,-50,Math.toRadians(90)))
-                        .strafeTo(new Vector2d(36,-50))
-                        .waitSeconds(0.01)
-                        .strafeTo(new Vector2d(36,-16))
+                drive.actionBuilder(new Pose2d(5,-50,Math.toRadians(0)))
+                        .splineTo(new Vector2d(33,-30),Math.toRadians(90))
+                        .strafeTo(new Vector2d(36,-16), velconst)//minimum speed
                         .build()
         ));
-        sleep(10);
         Actions.runBlocking(
                 //Block #1
                 drive.actionBuilder(new Pose2d(45,-16,Math.toRadians(90)))
-                        .strafeTo(new Vector2d(45,-55))
+                        .strafeTo(new Vector2d(45,-55), velconst)//minimum speed
                         .build()
         );
         sleep(10);
         Actions.runBlocking(
                 //Block #2
                 drive.actionBuilder(new Pose2d(45,-55,Math.toRadians(90)))
-                        .strafeTo(new Vector2d(45,-16))
-                        .waitSeconds(0.01)
-                        .strafeTo(new Vector2d(57,-16))
-                        .waitSeconds(0.01)
-                        .strafeTo(new Vector2d(57,-55))
+                        .strafeTo(new Vector2d(45,-16), velconst)//minimum speed
+                        .strafeTo(new Vector2d(57,-16), velconst)//minimum speed
+                        .strafeTo(new Vector2d(57,-55), velconst)//minimum speed
                         .build()
         );
-        sleep(10);
       /*Actions.runBlocking(
                 //block #3
                 drive.actionBuilder(new Pose2d(57,-55,Math.toRadians(270)))
@@ -152,51 +151,53 @@ public class AutoPurple extends LinearOpMode {
         sleep(250);*/
         Actions.runBlocking(new SequentialAction(
                 new ParallelAction(
-                armSwing.pickup(),
+                armSwing.vertPickup0(),
                 wrist.zero1(),
                 teeth.open()),
-                drive.actionBuilder(new Pose2d(48,-40,Math.toRadians(270)))
+                drive.actionBuilder(new Pose2d(48,-30,Math.toRadians(270)))
                         //go out so that the person can grab blocks
                         .waitSeconds(0.25)
                         .turnTo(Math.toRadians(180))
-                        .strafeTo(new Vector2d(48,-63.5))
+                        .strafeTo(new Vector2d(48,-62.5))
                         .build()
         ));
         //grab clipped blocks
-        //TODO: finish this!!!
         Actions.runBlocking(new SequentialAction(
                 //block #1 to bar
                 new ParallelAction(
-                armSwing.vertPickup0(),
                 spin.straight(),
-                wrist.vertGrb(),
-                teeth.closed(),
-                drive.actionBuilder(new Pose2d(46,-56,Math.toRadians(180)))
+                wrist.zero1(),
+                teeth.closed()),
+                drive.actionBuilder(new Pose2d(48,-62.5,Math.toRadians(180)))
+                        .waitSeconds(0.4)
+                        .build(),
+                armSwing.vertBar0(),
+                drive.actionBuilder(new Pose2d(46,-45,Math.toRadians(180)))
                         .waitSeconds(0.1)
                         .build()
-        )));
+        ));
         sleep(200);
         Actions.runBlocking(new SequentialAction(
                 //put on top bar
                 teeth.closed(),
                 wrist.vertGrb(),
-                drive.actionBuilder(new Pose2d(48,-56,Math.toRadians(180)))
+                drive.actionBuilder(new Pose2d(48,-45,Math.toRadians(180)))
                         .waitSeconds(0.1)
                         .turnTo(0)
-                        .strafeTo(new Vector2d(2,-50))
+                        .strafeTo(new Vector2d(2,-60))
                         .waitSeconds(0.1)
                         .build(),
-                armSwing.vertBar0()));
+                armSwing.vertBar2()));
 
         sleep(100);
 
         Actions.runBlocking(new SequentialAction(
-                drive.actionBuilder(new Pose2d(2,-50,0))
-                        .strafeTo(new Vector2d(2,-38))
+                drive.actionBuilder(new Pose2d(2,-60,0))
+                        .strafeTo(new Vector2d(2,-40))
                         .waitSeconds(0.1)
                         .build(),
-                armSwing.vertBar1(),
-                drive.actionBuilder(new Pose2d(2,-38,0))
+                armSwing.vertBar3(),
+                drive.actionBuilder(new Pose2d(2,-40,0))
                         .strafeTo(new Vector2d(2,-46))
                         .build(),
                 teeth.open()

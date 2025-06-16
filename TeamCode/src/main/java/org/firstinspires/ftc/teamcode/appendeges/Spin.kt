@@ -15,8 +15,8 @@ class Spin(hardwareMap: HardwareMap) {
      * know the position of the scoringArm
      */
     enum class SpinPos(val position: Double) {
-        Offset(0.0),
-        Straight(1.0)
+        Offset(1.0),
+        Straight(0.0)
 
     }
 

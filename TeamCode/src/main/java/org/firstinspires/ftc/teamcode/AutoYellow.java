@@ -108,7 +108,7 @@ public class AutoYellow extends LinearOpMode {
         Actions.runBlocking(wrist.offset());
         //Get Second Block//////////////////////////////////////////////////////////////////////////
         Actions.runBlocking(new SequentialAction(
-                drive.actionBuilder(new Pose2d(-47,-39,-1))
+                drive.actionBuilder(new Pose2d(-47,-40,-1))
                         .waitSeconds(0.001)
                         .turnTo(0)
                         .build(),

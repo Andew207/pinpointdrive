@@ -19,7 +19,7 @@ class Wrist(hardwareMap: HardwareMap) {
         AutoL4thblock(0.9),
         Straight(0.6),
         Sweep(0.4),
-        VertGrab(0.35),
+        VertGrab(0.375),
         Back(0.3),
         Score(0.15),
         ZeroPointOne(0.1),
