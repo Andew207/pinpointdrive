@@ -28,7 +28,7 @@ class ArmSwing(hardwareMap: HardwareMap) {
         VerticalBar0(1100),
         VerticalBar1(850),
         VerticalBar2(1300),
-        VerticalBar3(450),
+        VerticalBar3(450), // Intentionally low so if it misses the top bar, it will get the bottom
         VertPickup0(300),
         Wall(665),
         Wall2(620),
