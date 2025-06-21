@@ -59,7 +59,7 @@ public class AutoPurple extends LinearOpMode {
                 new AngularVelConstraint(Math.PI / 2)
         ));
         VelConstraint velconst = new MinVelConstraint(Arrays.asList(
-                new TranslationalVelConstraint(120.0),
+                new TranslationalVelConstraint(230.0),
                 new AngularVelConstraint(Math.PI / 2)
         ));
         AccelConstraint baseAccelConstraint = new ProfileAccelConstraint(-30.0, 50.0);
@@ -149,20 +149,22 @@ public class AutoPurple extends LinearOpMode {
                         //go out so that the person can grab blocks
                         .waitSeconds(0.1)
                         .turnTo(Math.toRadians(180))
-                        .strafeTo(new Vector2d(48,-63.5))
+                        .strafeTo(new Vector2d(48,-63))
                         .build()
         ));
         //grab clipped blocks
         Actions.runBlocking(new SequentialAction(
                 //block #1 to bar
                 new ParallelAction(
+                armSwing.vertPickup0(),
                 spin.straight(),
                 wrist.zero1(),
                 teeth.closed()),
-                drive.actionBuilder(new Pose2d(48,-63.5,Math.toRadians(180)))
+                drive.actionBuilder(new Pose2d(48,-63,Math.toRadians(180)))
                         .waitSeconds(0.5)
                         .build(),
                 armSwing.vertBar0(),
+                teeth.closed(),
                 drive.actionBuilder(new Pose2d(46,-45,Math.toRadians(180)))
                         .waitSeconds(0.1)
                         .build()
@@ -181,19 +183,28 @@ public class AutoPurple extends LinearOpMode {
                 armSwing.vertBar2()));
 
         sleep(100);
-
         Actions.runBlocking(new SequentialAction(
                 drive.actionBuilder(new Pose2d(2,-60,0))
-                        .strafeTo(new Vector2d(2,-40))
+                        .strafeTo(new Vector2d(2,-40), velconst)//minimum speed
                         .waitSeconds(0.1)
                         .build(),
                 armSwing.vertBar3(),
                 drive.actionBuilder(new Pose2d(2,-40,0))
-                        .strafeTo(new Vector2d(2,-46))
+                        .strafeTo(new Vector2d(2,-46), velconst)//minimum speed
                         .build(),
                 teeth.open()
         ));
-        sleep(100);
+        sleep(250);
+        Actions.runBlocking(new SequentialAction( //TODO: Test this change
+                new ParallelAction(
+                        armSwing.vertPickup0(),
+                        wrist.zero1(),
+                        teeth.open()),
+                drive.actionBuilder(new Pose2d(48,-50,Math.toRadians(0)))
+                        .turn(Math.toRadians(180))
+                        .strafeTo(new Vector2d(48,-63.5))
+                        .build()
+        ));
         Actions.runBlocking(new SequentialAction(
                 //block #2 to bar
                 new ParallelAction(
@@ -201,7 +212,6 @@ public class AutoPurple extends LinearOpMode {
                         wrist.zero1(),
                         teeth.closed()),
                 drive.actionBuilder(new Pose2d(48,-63.5,Math.toRadians(180)))
-                        .turnTo(Math.toRadians(180))
                         .waitSeconds(0.5)
                         .build(),
                 armSwing.vertBar0(),
@@ -223,12 +233,12 @@ public class AutoPurple extends LinearOpMode {
                 armSwing.vertBar2()));
         Actions.runBlocking(new SequentialAction(
                 drive.actionBuilder(new Pose2d(6,-60,0))
-                        .strafeTo(new Vector2d(6,-40))
+                        .strafeTo(new Vector2d(6,-40), velconst)//minimum speed
                         .waitSeconds(0.1)
                         .build(),
                 armSwing.vertBar3(),
                 drive.actionBuilder(new Pose2d(6,-40,0))
-                        .strafeTo(new Vector2d(6,-46))
+                        .strafeTo(new Vector2d(6,-46), velconst)//minimum speed
                         .build(),
                 teeth.open()
         ));

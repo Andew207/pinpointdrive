@@ -109,6 +109,7 @@ public class KyptenWillCarry extends LinearOpMode {
 
         wrist.setPosition(0);
 
+        //There is an error that happens when the battery is too low to run initialization code
         armSwing.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
         armSwing.setTargetPosition(150);
         armSwing.setMode(DcMotor.RunMode.RUN_TO_POSITION);
@@ -128,6 +129,8 @@ public class KyptenWillCarry extends LinearOpMode {
         inOutLeft.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
         inOutRight.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
 
+
+
         // Run with encoder
 
 
@@ -137,6 +140,8 @@ public class KyptenWillCarry extends LinearOpMode {
         boolean changed2 = false;
         boolean changed3 = false;
         boolean changed4 = false;
+        boolean backarm = false;
+        boolean reset = false;
 
         double drive;
         double strafe;
@@ -146,12 +151,12 @@ public class KyptenWillCarry extends LinearOpMode {
         double backLeftPower;
         double backRightPower;
         double armPower;
-        int inOutPosition = 0;
         double teethPos = 0;
-        int armSwingPosition = 0;
         double bumper = 0;
         double hands = 0.2;
-        boolean backarm = false;
+        int inOutPosition = 0;
+        int precisearm = 1;
+        int armSwingPosition = 0;
 
 
 
@@ -166,7 +171,7 @@ public class KyptenWillCarry extends LinearOpMode {
             // Setting the 3 intake servos
 
             // slow mode! //
-            if (gamepad1.y && !changed) {
+            if (gamepad1.y && !changed && !gamepad1.right_stick_button) {
                 if (slow == 1) slow = 2;
                 else slow = 1;
                 changed = true;
@@ -209,11 +214,11 @@ public class KyptenWillCarry extends LinearOpMode {
 
             if(bumper != 0){
                 if (bumper > 0){
-                    armSwingPosition += 30;
+                    armSwingPosition += 30/precisearm;
                 }
                 else
-                    armSwingPosition -= 30;
-                if (armSwingPosition >= 30){
+                    armSwingPosition -= 30/precisearm;
+                if (armSwingPosition >= 30 && !reset){
                     armSwingPosition = -30;
                 }
             }
@@ -252,9 +257,25 @@ public class KyptenWillCarry extends LinearOpMode {
                 wrist.setPosition(0.3);
             }
 
+//            if(gamepad1.right_stick_button) {//on click, remove downward limit...
+//                reset = true;
+//                if(gamepad1.y) {//click y to reset arm
+//                    wrist.setPosition(0.1);
+//                    armSwing.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+//                    armSwing.setTargetPosition(150);
+//                    armSwing.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+//                    armSwing.setTargetPosition(150);
+//                    reset = false;
+//                }
+//            }
+            if(gamepad1.right_stick_button){
+                if(precisearm == 1){precisearm = 2;}
+                else {precisearm = 1;}
+            }
+
             if(gamepad1.dpad_down){
                 inOutPosition = 0;
-                armSwingPosition = -275;
+                armSwingPosition = -210;//TODO: Test change
                 wrist.setPosition(0.1);
             }
             if(gamepad1.dpad_right){
@@ -333,7 +354,7 @@ public class KyptenWillCarry extends LinearOpMode {
             telemetry.addData("FR Encoder", frontRightDrive.getCurrentPosition());
             telemetry.addData("BL Encoder", backLeftDrive.getCurrentPosition());
             telemetry.addData("BR Encoder", backRightDrive.getCurrentPosition());
-            telemetry.addData("Arm Target Pos", armSwing.getTargetPosition());
+            telemetry.addData("Arm Target Pos", armSwingPosition);
             telemetry.addData("Arm Swing", armSwing.getCurrentPosition());
             telemetry.addData("Wrist Pos", wrist.getPosition());
 
