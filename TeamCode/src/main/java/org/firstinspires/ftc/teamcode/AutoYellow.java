@@ -57,6 +57,10 @@ public class AutoYellow extends LinearOpMode {
                 new TranslationalVelConstraint(100.0),
                 new AngularVelConstraint(Math.PI / 2)
         ));
+        VelConstraint velconst = new MinVelConstraint(Arrays.asList(
+                new TranslationalVelConstraint(40.0),
+                new AngularVelConstraint(Math.PI / 2)
+        ));
         AccelConstraint baseAccelConstraint = new ProfileAccelConstraint(-30.0, 50.0);
 
 
@@ -82,7 +86,8 @@ public class AutoYellow extends LinearOpMode {
         Actions.runBlocking(new SequentialAction(
                 // Reach out to the bucket
                 reach.out(),
-                drive.actionBuilder(new Pose2d(-51,-55,0))
+                drive.actionBuilder(new Pose2d(-38.5,-64.5,0))
+                        .strafeTo(new Vector2d(-51,-55), velconst)
                         .build(),
 
                 drive.actionBuilder(new Pose2d(-53, -57, 0))
@@ -122,7 +127,7 @@ public class AutoYellow extends LinearOpMode {
         Actions.runBlocking(new SequentialAction(
                 armSwing.score2(),
                 reach.out(),
-                drive.actionBuilder(new Pose2d(-53, -58, 0))
+                drive.actionBuilder(new Pose2d(-53, -56, 0))
                         .turnTo(Math.toRadians(-45))
                         .waitSeconds(0.2)
                         .build(),
