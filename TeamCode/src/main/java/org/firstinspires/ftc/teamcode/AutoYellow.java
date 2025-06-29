@@ -218,8 +218,11 @@ public class AutoYellow extends LinearOpMode {
         Actions.runBlocking(wrist.back());
         sleep(750);
         Actions.runBlocking(teeth.open());
-        telemetry.update();
         sleep(250);
+        Actions.runBlocking(spin.offset());
+        sleep(100);
+        Actions.runBlocking(spin.straight());
+        telemetry.update();
         Actions.runBlocking(new SequentialAction(
                 wrist.offset(),
                 reach.inn(),
